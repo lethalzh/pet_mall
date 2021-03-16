@@ -51,14 +51,14 @@
                         <li class="dog_box" @click="setStats('dog')">
                             <span class="imgDog"></span>
                             <p><span>{{$getState('cache','AnimalSum').dog}}</span>种精选宝贝</p>
-                            <a class="inmain" v-if="$getState('cache','Animal')=='dog'">正在狗狗站溜达</a>
+                            <a class="inmain" v-if="Animal=='dog'">正在狗狗站溜达</a>
                             <a class="doga" v-else>切换到狗狗站</a>
                             <img src="@/assets/images/dogpack.jpg" >
                         </li>
                         <li class="cat_box" @click="setStats('cat')">
                             <span class="imgCat"></span>
                             <p><span>{{$getState('cache','AnimalSum').cat}}</span>种精选宝贝</p>
-                            <a class="inmain" v-if="$getState('cache','Animal')=='cat'">正在猫猫站溜达</a>
+                            <a class="inmain" v-if="Animal=='cat'">正在猫猫站溜达</a>
                             <a class="cata" v-else>切换到猫猫站</a>
                             <img src="@/assets/images/catpack.jpg" >
                         </li>
@@ -167,7 +167,7 @@
                 welcomeCat:'喵喵，欢迎来宠爱',
                 welcomeDog:'汪汪，欢迎来宠爱',
                 dogLogo:dogLogo,catLogo:catLogo,dogCart:dogCart,catCart:catCart,
-                // search:'',
+                Animal:'dog',
                 cartInNum:0,
                 carousels:[],
                 titles:[],
@@ -219,12 +219,14 @@
             },
             setStats(anm){
                 sessionStorage.setItem('Animal',anm)
+                this.$setState('cache','Animal',anm)
                 let str = this.$getState('cache','Animal') =='cat'?'#62a727':'#e74085'
                 this.$refs.mybr.style.backgroundColor=str;
-                this.$setState('cache','Animal',sessionStorage.getItem('Animal'))
+                this.$router.go(0)
             },
         },
         created() {
+            this.Animal =sessionStorage.getItem('Animal')
             let name = sessionStorage.getItem('userName')
             let id =   sessionStorage.getItem('userId')
             this.$setState('user','userName',name||null)

@@ -27,7 +27,7 @@ export default {
 
     },
     created() {
-         // this.Animal=this.$getState('cache','Animal')||localStorage.getItem('Animal')
+          this.Animal=this.$getState('cache','Animal')||localStorage.getItem('Animal')
     }
 }
 </script>

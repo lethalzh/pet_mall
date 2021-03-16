@@ -18,7 +18,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    config.headers.Animal = localStorage.getItem('Animal')
+    config.headers.Animal = sessionStorage.getItem('Animal')
      config.headers.token = getState('user', 'token')
     if (typeof config.params == 'string' || typeof config.params == 'number') {
       config.url = `${config.url}/${config.params}`

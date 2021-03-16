@@ -65,7 +65,9 @@
                                 <img :src="i.com_imgs"/>
                                 <p>
                                     <img class="activityico" src="https://static.epetbar.com/static_wap/appmall/lib/list/activity.png?version=2016120201">
-                                  {{i.com_name}}</p>
+                                  <span v-html='i.com_name_highlights'></span>
+
+                                </p>
                                 <p>${{i.com_price}}</p>
                                 <p>月销{{i.com_msales}}(袋)</p>
                                 </router-link>
@@ -116,12 +118,24 @@
             }
         },
         methods:{
+
             async getProductList(flag=0){
                 this.search =  this.$route.params.search;
                 let [err,res] = await this.$apis.product.getProductList({search:this.search,flag:flag,page:this.page})
                 if(res.msg=='success'){
                     this.total= res.total
                     this.productData = res.data
+                    this.productData = this.productData.map(item => {
+                        for (let key in item) {
+                            if (key === 'com_name') {
+                                let replaceReg = new RegExp(this.search, 'g')// 匹配关键字正则
+                                let replaceString = '<span style="color: #ff5134">' + this.search + '</span>' // 高亮替换v-html值
+                                item[key + '_highlights'] = item[key].replace(replaceReg, replaceString) // 开始替换
+
+                            }
+                        }
+                        return item
+                    })
                 }else {
                 }
             },
@@ -137,8 +151,10 @@
 </script>
 
 <style scoped lang="scss">
+    .highlights-text {
+        color: #ff5134 !important;
+    }
     .ProductList{
-
         .ProductBody{
             margin-top: -20px;
             background-color: #e1e1e1;
