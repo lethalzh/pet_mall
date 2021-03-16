@@ -22,3 +22,7 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=Lethalzh&show_icons=true&theme=dracula)
+
