@@ -89,10 +89,11 @@
                 this.$refs.leftPet.style.backgroundColor='#e63f85'
             },
             setStats(anm){
-                localStorage.setItem('Animal',anm)
-                this.$setState('cache','Animal',localStorage.getItem('Animal'))
+                sessionStorage.setItem('Animal',anm)
+                this.$setState('cache','Animal',anm)
                 this.$refs.DogOrCat.style.display='none'
                 this.$refs.selectBox.style.display='none'
+                // this.$bus.$emit('SetStats',anm)
             },
             async getSum(){
                let [err,res] =await this.$apis.home.getProducts_num()

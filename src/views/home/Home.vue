@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-      <Dog-Or-Cat v-if="Animal==null"></Dog-Or-Cat>
+      <Dog-Or-Cat v-if="Animal!=null"></Dog-Or-Cat>
       <Nav-Status></Nav-Status>
       <Home-Body></Home-Body>
       <Footer-Status></Footer-Status>
@@ -27,7 +27,7 @@ export default {
 
     },
     created() {
-          this.Animal=this.$getState('cache','Animal')||localStorage.getItem('Animal')
+          this.Animal=this.$getState('cache','Animal')||sessionStorage.getItem('Animal')
     }
 }
 </script>

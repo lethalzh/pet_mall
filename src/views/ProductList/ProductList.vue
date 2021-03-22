@@ -35,8 +35,16 @@
                    <div style="margin-bottom: 15px">
                        <div class="filBlock">
                            <div class="title"><span>品牌:</span></div>
-                           <div class="fil_li"><span>aa</span></div>
-                           <div class="fil_li"><span>aa</span></div>
+                           <div class="Block">
+                                 <div class="fil_li">
+                                     <span>全部</span>
+                                 </div>
+                                 <div class="fil_li" v-for="(bandr,index) of brands" :key="index" @click="getProductList(0,bandr)">
+                                     <span>{{bandr}}</span>
+                                 </div>
+                           </div>
+
+
                        </div>
                        <div class="filBlock h40">
                            <div class="tit"><span>品牌:</span></div>
@@ -114,24 +122,26 @@
                 productData:[],
                 page:1,
                 total:0,
-                search:''
+                search:'',
+                brands:[],
             }
         },
         methods:{
-
-            async getProductList(flag=0){
-                this.search =  this.$route.params.search;
+            async getProductList(flag=0,search=''){
+                if(search!='')
+                   this.$route.params.search=search;
+                this.search =  this.$route.params.search
                 let [err,res] = await this.$apis.product.getProductList({search:this.search,flag:flag,page:this.page})
                 if(res.msg=='success'){
                     this.total= res.total
                     this.productData = res.data
+                    this.brands= res.brands
                     this.productData = this.productData.map(item => {
                         for (let key in item) {
                             if (key === 'com_name') {
-                                let replaceReg = new RegExp(this.search, 'g')// 匹配关键字正则
-                                let replaceString = '<span style="color: #ff5134">' + this.search + '</span>' // 高亮替换v-html值
-                                item[key + '_highlights'] = item[key].replace(replaceReg, replaceString) // 开始替换
-
+                                let replaceReg = new RegExp(this.search, 'g')
+                                let replaceString = '<span style="color: #ff5134">' + this.search + '</span>'
+                                item[key + '_highlights'] = item[key].replace(replaceReg, replaceString)
                             }
                         }
                         return item
@@ -186,7 +196,7 @@
                         line-height: 20px;
                         padding: 10px 0 0;
                         display: flex;
-                        flex-wrap: wrap;
+                    
                         .tag{
                             line-height: 20px;
                             padding-right: 8px;
@@ -207,8 +217,6 @@
 
                             }
                         }
-
-
                     }
                     .title,.tit{
                         margin:30px 10px;
@@ -220,22 +228,28 @@
                     .tit{
                         margin:0 10px;
                     }
-                    .fil_li{
-                        display: inline;
-                        font-size: 14px;
-                        margin: 20px -1px -1px 0;
-                        position: relative;
-                        z-index: 10;
-                        width: 121px;
-                        height: 38px;
-                        line-height: 38px;
-                        text-align: center;
-                        border: #ddd solid 1px;
-                        &:hover{
-                            background: #fff6ef;
-                            color: #ff6302;
+                    .Block{
+                        display: flex;
+                        flex-wrap: wrap;
+                        .fil_li{
+                            display: inline;
+                            font-size: 14px;
+                            margin: 20px -1px -1px 0;
+                            position: relative;
+                            overflow: hidden;
+                            z-index: 10;
+                            width: 121px;
+                            height: 38px;
+                            line-height: 38px;
+                            text-align: center;
+                            border: #ddd solid 1px;
+                            &:hover{
+                                background: #fff6ef;
+                                color: #ff6302;
+                            }
                         }
                     }
+
                     .select{
                         height: 53px;
                         .spanDog{
