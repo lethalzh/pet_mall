@@ -37,8 +37,17 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                            label="价格"
+                            label="原始价格"
                             width="180">
+                        <template slot-scope="scope">
+                            <div>${{(scope.row.com_oldprice)*(scope.row.s_num)}}
+                                <span>{{scope.com_oldprice}}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="优惠价格"
+                            width="100">
                         <template slot-scope="scope">
                             <div>${{(scope.row.com_price)*(scope.row.s_num)}}
                             <span>{{scope.com_price}}</span>
@@ -48,7 +57,7 @@
                     <el-table-column
                             prop="name"
                             label="操作"
-                            width="180">
+                            width="140">
                         <template slot-scope="scope">
                             <el-tag type="danger" @click="deleteCol(scope.row.s_id)">删除</el-tag>
                         </template>
@@ -56,7 +65,7 @@
                 </el-table>
                <div class="btmTable">
                    <div><router-link to="/product"><el-button type="primary">继续购物</el-button></router-link></div>
-                   <div class="rightButm"><p>总价格：<span>${{totalPrice}}</span></p><el-button type="primary" @click="Settlement()">去结算</el-button></div>
+                   <div class="rightButm"><p>已优惠：<span>${{(concession-totalPrice).toFixed(2)}}</span>   总价格：<span>${{totalPrice}}</span></p><el-button type="primary" @click="Settlement()">去结算</el-button></div>
                </div>
             </div>
         </div>
@@ -74,7 +83,8 @@
         },
         data() {
             return {
-                tableData: [], multipleSelection: [],totalPrice:0
+                tableData: [], multipleSelection: [],
+                totalPrice:0,concession:0
             }
         },
         methods: {
@@ -109,9 +119,13 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
                 this.totalPrice=0
+                this.concession=0
                 for(let item of val){
                     this.totalPrice+=item.com_price*item.s_num
+                    this.concession+=item.com_oldprice*item.s_num
                 }
+                this.totalPrice.toFixed(2)
+                this.concession.toFixed(2)
             },
             async Settlement(){
                 let id = this.$getState('user','userId')||sessionStorage.getItem('userId');
@@ -140,7 +154,7 @@
         },
         created() {
             this.getCart();
-        }
+        },
     }
 </script>
 

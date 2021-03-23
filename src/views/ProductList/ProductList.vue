@@ -36,9 +36,9 @@
                        <div class="filBlock">
                            <div class="title"><span>品牌:</span></div>
                            <div class="Block">
-                                 <div class="fil_li">
-                                     <span>全部</span>
-                                 </div>
+<!--                                 <div class="fil_li">-->
+<!--                                     <span @click="getProductList(0,search)">全部</span>-->
+<!--                                 </div>-->
                                  <div class="fil_li" v-for="(bandr,index) of brands" :key="index" @click="getProductList(0,bandr)">
                                      <span>{{bandr}}</span>
                                  </div>
@@ -46,14 +46,14 @@
 
 
                        </div>
-                       <div class="filBlock h40">
-                           <div class="tit"><span>品牌:</span></div>
-                           <div class="h40"><div class="tag">aa13</div><div class="tag">a123a</div></div>
-                       </div>
-                       <div class="filBlock h40">
-                           <div class="tit"><span>品牌:</span></div>
-                           <div class="h40"><div class="tag">a123a</div></div>
-                       </div>
+<!--                       <div class="filBlock h40">-->
+<!--                           <div class="tit"><span>品牌:</span></div>-->
+<!--                           <div class="h40"><div class="tag">aa13</div><div class="tag">a123a</div></div>-->
+<!--                       </div>-->
+<!--                       <div class="filBlock h40">-->
+<!--                           <div class="tit"><span>品牌:</span></div>-->
+<!--                           <div class="h40"><div class="tag">a123a</div></div>-->
+<!--                       </div>-->
                    </div>
                     <div>
                         <div style="height: 15px;background-color: #e1e1e1;">
@@ -76,7 +76,7 @@
                                   <span v-html='i.com_name_highlights'></span>
 
                                 </p>
-                                <p>${{i.com_price}}</p>
+                                <p><span class="old">${{i.com_oldprice}}</span>${{i.com_price}}</p>
                                 <p>月销{{i.com_msales}}(袋)</p>
                                 </router-link>
                             </div>
@@ -127,10 +127,11 @@
             }
         },
         methods:{
-            async getProductList(flag=0,search=''){
-                if(search!='')
-                   this.$route.params.search=search;
-                this.search =  this.$route.params.search
+            async getProductList(flag=0,bandr=''){
+                if(bandr!='')
+                    this.search=bandr+'+'+this.$route.params.search;
+                else
+                    this.search=this.$route.params.search;
                 let [err,res] = await this.$apis.product.getProductList({search:this.search,flag:flag,page:this.page})
                 if(res.msg=='success'){
                     this.total= res.total
@@ -139,15 +140,23 @@
                     this.productData = this.productData.map(item => {
                         for (let key in item) {
                             if (key === 'com_name') {
-                                let replaceReg = new RegExp(this.search, 'g')
-                                let replaceString = '<span style="color: #ff5134">' + this.search + '</span>'
-                                item[key + '_highlights'] = item[key].replace(replaceReg, replaceString)
+                                let str= this.search
+                                let replaceRegs=str.split('+')
+                                for(let i of replaceRegs){
+                                    let replaceReg = new RegExp(i, 'g')
+                                    let replaceString = '<span style="color: #ff5134">' + i + '</span>'
+                                    item[key + '_highlights'] = item[key].replace(replaceReg, replaceString)
+                                    item[key] = item[key + '_highlights']
+                                    console.log( item[key + '_highlights'],item[key].replace(replaceReg, replaceString),'----------------------')
+                                }
+
                             }
                         }
                         return item
                     })
                 }else {
                 }
+                // this.search.replace('+',' ')
             },
             changePage(val){
                 this.page= val
@@ -325,7 +334,11 @@
                                 color: #999;
                                 font-size: 12px;
                             }
-
+                            .old{
+                                color: #999;
+                                margin-right: 10px;
+                                text-decoration: line-through;
+                            }
                             img{
                                 width: 200px; height: 200px;margin-left: 6.5px;
                             }

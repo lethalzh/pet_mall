@@ -83,9 +83,9 @@
                                         </div>
                                         <hr>
                                         <div class="cont" v-for="(ty,j) of item[0].type" :key="j">
-                                            <span class="ab" @click="toProduct(ty.name)" >{{ty.name}}</span>
+                                            <span class="ab" @click="toProduct(ty.name,item[0].titel)" >{{ty.name}}</span>
                                             <img :src="ty.nameimg" alt="">
-                                            <span v-for="(sup,i) of ty.subtitle" class="a" @click="toProduct(sup.subtit)" :key="i">{{sup.subtit}}</span>
+                                            <span v-for="(sup,i) of ty.subtitle" class="a" @click="toProduct(ty.name,sup.subtit)" :key="i">{{sup.subtit}}</span>
                                         </div>
                                         <hr>
                                         <div>
@@ -174,8 +174,11 @@
             }
         },
         methods:{
-            toProduct(Url){
-                window.location.href=`${this.$getState('dict','thisUrl')}product/${Url}`;
+            toProduct(Url,ur=''){
+                let str=Url
+                if (ur!='')
+                    str +='+'+ur
+                window.location.href=`${this.$getState('dict','thisUrl')}product/${str}`;
             },
             async getCarousel(){
                 let [err,res] = await this.$apis.home.getCarousels()
@@ -220,12 +223,13 @@
             setStats(anm){
                 sessionStorage.setItem('Animal',anm)
                 this.$setState('cache','Animal',anm)
-                let str = this.$getState('cache','Animal') =='cat'?'#62a727':'#e74085'
+                let str = anm =='cat'?'#62a727':'#e74085'
                 this.$refs.mybr.style.backgroundColor=str;
-                this.$router.go(0)
+                window.location.href=`${this.$getState('dict','thisUrl')}`
             },
         },
         created() {
+            console.log(sessionStorage.getItem('Animal'),'naV-----------')
             this.Animal =sessionStorage.getItem('Animal')
             let name = sessionStorage.getItem('userName')
             let id =   sessionStorage.getItem('userId')
@@ -240,8 +244,10 @@
 
         },
         mounted() {
-            let str = this.$getState('cache','Animal') =='cat'?'#62a727':'#e74085'
-            this.$refs.mybr.style.backgroundColor=str;
+            if(this.mode==0) {
+                let str = this.$getState('cache', 'Animal') == 'cat' ? '#62a727' : '#e74085'
+                this.$refs.mybr.style.backgroundColor = str;
+            }
         }
     }
 </script>
