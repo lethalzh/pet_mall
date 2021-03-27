@@ -64,7 +64,7 @@
                             <span :class="$getState('cache','Animal')=='dog'?'spanDog':'spanCat'" @click="getProductList(2)" class="ccc">价格</span>
                         </div>
                     </div>
-                    <div>
+                    <div  v-loading="loading">
                         <div style="height: 15px;background-color: #e1e1e1;">
                         </div>
                         <div class="splist">
@@ -119,6 +119,7 @@
                     label: '双皮奶'
                 }],
                 value:1,
+                loading:true,
                 productData:[],
                 page:1,
                 total:0,
@@ -147,13 +148,14 @@
                                     let replaceString = '<span style="color: #ff5134">' + i + '</span>'
                                     item[key + '_highlights'] = item[key].replace(replaceReg, replaceString)
                                     item[key] = item[key + '_highlights']
-                                    console.log( item[key + '_highlights'],item[key].replace(replaceReg, replaceString),'----------------------')
+
                                 }
 
                             }
                         }
                         return item
                     })
+                    this.loading=false
                 }else {
                 }
                 // this.search.replace('+',' ')

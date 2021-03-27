@@ -4,13 +4,22 @@
       <Nav-Status></Nav-Status>
       <Home-Body></Home-Body>
       <Footer-Status></Footer-Status>
+      <el-cascader
+              size="large"
+              :options="options"
+              v-model="selectedOptions"
+              @change="handleChange">
+      </el-cascader>
+      aaa
     <div><router-view/></div>
+
 
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+
+import { regionData,provinceAndCityData,provinceAndCityDataPlus,regionDataPlus,CodeToText,TextToCode } from 'element-china-area-data'
 import NavStatus from '@/components/NavStatus.vue'
 import DogOrCat from '@/components/DogOrCat.vue'
 import HomeBody from './HomeBody.vue'
@@ -18,13 +27,18 @@ import FooterStatus from '@/components/FooterStatus.vue'
 export default {
    name: 'Home',
    components: {
-    DogOrCat,NavStatus,HomeBody,FooterStatus
+        DogOrCat,NavStatus,HomeBody,FooterStatus
     },
     data(){
-      return{Animal:null}
+      return{Animal:null,
+          options: regionData,
+          selectedOptions: []
+      }
     },
     methods:{
-
+        handleChange (value) {
+            console.log(value,this.selectedOptions)
+        }
     },
     created() {
           this.Animal=sessionStorage.getItem('Animal')

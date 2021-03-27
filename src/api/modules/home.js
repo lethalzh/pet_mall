@@ -38,6 +38,38 @@ export function Register(params){
         params
     })
 }
+//获取收货地址
+export function getAddress(params){
+	return request({
+		url: '/user/getaddress',
+		method: 'post',
+		params
+	})
+}
+//添加收货地址
+export function AddAddress(params) {
+	return request({
+		url: '/user/addaddress',
+		method: 'post',
+		params
+	})
+}
+//删除收货地址
+export function delectAddress(params) {
+	return request({
+		url: '/user/delectaddress',
+		method: 'post',
+		params
+	})
+}
+//修改收货地址
+export function eidtAddress(params) {
+	return request({
+		url: '/user/editaddress',
+		method: 'post',
+		params
+	})
+}
 // export function getProducts_num(urlParam){
 // 	return request({
 // 		url: '/products_num/{Animal}',

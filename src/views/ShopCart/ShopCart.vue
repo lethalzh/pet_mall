@@ -128,27 +128,38 @@
                 this.concession.toFixed(2)
             },
             async Settlement(){
-                let id = this.$getState('user','userId')||sessionStorage.getItem('userId');
                 if(this.multipleSelection.length!=0){
-                    let [err,res]= await this.$apis.product.Settlement({commodity:this.multipleSelection,totalPrice:this.totalPrice,id:id})
-                    if(res.msg=='success'){
-                        this.$message({
-                            message: '前往付款！',
-                            type: 'success'
-                        });
-                        this.$router.push({name:'odergroup'})
-                    }else{
-                        this.$message({
-                            message: '结算失败！',
-                            type: 'warning'
-                        });
-                    }
+                    this.$router.push({name:'odergroup',
+                        params:{commodity:this.multipleSelection,totalPrice:this.totalPrice}
+                    })
                 }else{
                     this.$message({
                         message: '没有结算商品',
                         type: 'warning'
                     });
                 }
+
+                // let id = this.$getState('user','userId')||sessionStorage.getItem('userId');
+                // if(this.multipleSelection.length!=0){
+                //     let [err,res]= await this.$apis.product.Settlement({commodity:this.multipleSelection,totalPrice:this.totalPrice,id:id})
+                //     if(res.msg=='success'){
+                //         this.$message({
+                //             message: '前往付款！',
+                //             type: 'success'
+                //         });
+                //         this.$router.push({name:'odergroup'})
+                //     }else{
+                //         this.$message({
+                //             message: '结算失败！',
+                //             type: 'warning'
+                //         });
+                //     }
+                // }else{
+                //     this.$message({
+                //         message: '没有结算商品',
+                //         type: 'warning'
+                //     });
+                // }
 
             }
         },

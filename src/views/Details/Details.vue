@@ -28,7 +28,8 @@
             </el-select><i class="el-icon-arrow-right"></i><span >商品详情</span>
         </div>
         <div class="DetailsBody">
-            <img class="aimg" :src="Details.com_imgs" alt="">
+            <div class="aimg"><pic-zoom :url="Details.com_imgs"></pic-zoom></div>
+<!--            <img class="aimg" :src="Details.com_imgs" alt="">-->
             <div class="Dbody">
                 <div class="topBody">
                     <h3>{{Details.com_name}}</h3>
@@ -53,13 +54,14 @@
 </template>
 
 <script>
+    import PicZoom from "vue-piczoom";
     import NavStatus from '@/components/NavStatus.vue'
     import FooterStatus from '@/components/FooterStatus.vue'
     import AddCart from '@/components/AddCart.vue'
     export default {
         name: "Details",
         components: {
-            NavStatus,FooterStatus,AddCart
+            NavStatus,FooterStatus,AddCart,PicZoom
         },
         data(){
             return{
@@ -73,8 +75,7 @@
                 value:1,
                 num:1,
                 address:'',
-                Details:{
-                },
+                Details:{com_imgs:''},
             }
         },
         methods:{
