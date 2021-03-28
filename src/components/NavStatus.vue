@@ -29,7 +29,7 @@
             <div class="logo"><img :src="$getState('cache','Animal')=='dog'?dogLogo:catLogo"/></div>
             <div class="search">
                 <div class="searchTop">
-                    <input type="text" placeholder="请输入" v-model="search" :class="$getState('cache','Animal')=='dog'?'borderdog':'bordercat'"/>
+                    <input type="text" placeholder="请输入" v-model="mySearch" :class="$getState('cache','Animal')=='dog'?'borderdog':'bordercat'"/>
                     <button :class="$getState('cache','Animal')=='dog'?'dogBgColor':'catBgColor'" @click="toProduct(search)">搜索</button>
                 </div>
                 <div class="searchBtm">
@@ -171,6 +171,7 @@
                 cartInNum:0,
                 carousels:[],
                 titles:[],
+                mySearch:''
             }
         },
         methods:{
@@ -229,6 +230,7 @@
             },
         },
         created() {
+            this.mySearch=this.search
             console.log(sessionStorage.getItem('Animal'),'naV-----------')
             this.Animal =sessionStorage.getItem('Animal')
             let name = sessionStorage.getItem('userName')
@@ -248,6 +250,9 @@
                 let str = this.$getState('cache', 'Animal') == 'cat' ? '#62a727' : '#e74085'
                 this.$refs.mybr.style.backgroundColor = str;
             }
+        },
+        updated() {
+
         }
     }
 </script>

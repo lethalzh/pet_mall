@@ -54,6 +54,14 @@ export function AddAddress(params) {
 		params
 	})
 }
+//编辑收货地址
+export function EditAddress(params) {
+	return request({
+		url: '/user/editaddress',
+		method: 'post',
+		params
+	})
+}
 //删除收货地址
 export function delectAddress(params) {
 	return request({

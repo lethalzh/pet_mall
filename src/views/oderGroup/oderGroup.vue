@@ -48,7 +48,7 @@
             </div>
         </div>
         <Footer-Status></Footer-Status>
-        <Add-Address ref="Addre"></Add-Address>
+        <Add-Address ref="Addre" :inserORedit="inserORedit" :addData='editData'></Add-Address>
     </div>
 </template>
 
@@ -65,7 +65,9 @@
                 addressArr:[],
                 totalPrice:0,
                 active:0,
-                deli:['丹鸟快递','顺丰航空','顺丰陆运']
+                deli:['丹鸟快递','顺丰航空','顺丰陆运'],
+                editData:{},
+                inserORedit:false
             }
         },
         methods:{
@@ -84,13 +86,21 @@
             },
             async  setTool(id,flag){
                 let selectAdd={}
+                this.inserORedit=false
                 if(flag==1){
                     for(let i of this.addressArr){
                         i.add_flag=i.add_id===id?'true':'false'
                     }
                 }else if(flag==2){
-
+                    for(let i of this.addressArr){
+                        if(i.add_id===id)
+                        this.editData=i;
+                    }
+                    this.editData.id=id
+                    this.inserORedit=true
+                    this.newAddres()
                 }else {
+                    this.inserORedit=false
                     let [err,res] = await this.$apis.home.delectAddress({add_id:id})
                     if(res.msg=='success'){
                         this.$message({
@@ -150,7 +160,6 @@
             this.getAddress()
             this.totalPrice= this.$route.params.totalPrice
             let  commodity= this.$route.params.commodity
-            console.log(commodity,'multipleSelection')
         }
     }
 </script>

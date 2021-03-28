@@ -89,7 +89,7 @@
         },
         methods: {
             async getCart() {
-                let id = this.$getState('user','userId')||localStorage.getItem('userId');
+                let id = this.$getState('user','userId')||sessionStorage.getItem('userId');
                 let [err,res]= await this.$apis.product.getCart({id:id})
                 if(res.msg=='success'){
                     this.tableData=res.data

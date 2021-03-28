@@ -39,6 +39,11 @@ const routes = [
     path: '/oderGroup',
     name: 'odergroup',
     component: () => import('../views/oderGroup/oderGroup.vue')
+  },
+  {
+    path: '/myInfo',
+    name: 'myinfo',
+    component: () => import('../views/MyInfo/MyInfo.vue')
   }
 ]
 
