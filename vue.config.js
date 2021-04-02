@@ -1,140 +1,65 @@
-'use strict'
-const path = require('path')
-const fs = require('fs')
-const defaultSettings = require('./src/settings.js')
-function resolve (dir) {
-    return path.join(__dirname, dir)
-}
-
-const name = defaultSettings.title || 'vue' // page title
-
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
-// You can change the port by the following method:
-// port = 9527 npm run dev OR npm run dev --port = 9527
-const port = process.env.port || process.env.npm_config_port || 8080 // dev port
-
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
+const path =  require('path');
+const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
+const resolve = (dir) => path.join(__dirname, dir);
 module.exports = {
-    /**
-     * You will need to set publicPath if you plan to deploy your site under a sub path,
-     * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-     * then publicPath should be set to "/bar/".
-     * In most cases please use '/' !!!
-     * Detail: https://cli.vuejs.org/config/#publicpath
-     */
-    publicPath: './',
-    outputDir: 'dist',
-    assetsDir: 'static',
-    // runtimeCompiler:true,
-    lintOnSave: false, // process.env.NODE_ENV === 'development',
-    productionSourceMap: false,
-    devServer: {
-        port: port,
-        open: false,
-        hot: true, // 开启热重载
-        overlay: {
-            warnings: false,
-            errors: true
-        },
-        proxy: {
-            '/proxy': {
-                target: 'http://localhost:8080/',
-                changeOrigin: true,
-                pathRewrite: {'^/proxy': ''}
-            }
-        }
+    publicPath: process.env.NODE_ENV === 'production' ? '/site/vue-demo/' : '/',  // 公共路径
+    indexPath: 'index.html' , // 相对于打包路径index.html的路径
+    outputDir: process.env.outputDir || 'dist', // 'dist', 生产环境构建文件的目录
+    assetsDir: 'static', // 相对于outputDir的静态资源(js、css、img、fonts)目录
+    lintOnSave: false, // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码
+    runtimeCompiler: true, // 是否使用包含运行时编译器的 Vue 构建版本
+    productionSourceMap: !IS_PROD, // 生产环境的 source map
+    parallel: require("os").cpus().length > 1, // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
+    pwa: {}, // 向 PWA 插件传递选项。
+    chainWebpack: config => {
+        config.resolve.symlinks(true); // 修复热更新失效
+        // 如果使用多页面打包，使用vue inspect --plugins查看html是否在结果数组中
+        config.plugin("html").tap(args => {
+            // 修复 Lazy loading routes Error
+            args[0].chunksSortMode = "none";
+            return args;
+        });
+        config.resolve.alias // 添加别名
+            .set('@', resolve('src'))
+            .set('@assets', resolve('src/assets'))
+            .set('@components', resolve('src/components'))
+            .set('@views', resolve('src/views'))
+            .set('@store', resolve('src/store'));
     },
     css: {
+        extract: IS_PROD,
+        requireModuleExtension: true,// 去掉文件名中的 .module
         loaderOptions: {
+            // 给 less-loader 传递 Less.js 相关选项
             less: {
-                javascriptEnabled: true
-            }
-        }
-    },
-    configureWebpack: {
-        // provide the app's title in webpack's name field, so that
-        // it can be accessed in index.html to inject the correct title.
-        name: name,
-        resolve: {
-            alias: {
-                '@': resolve('src')
-            }
-        }
-    },
-    chainWebpack (config) {
-        config.plugins.delete('preload') // TODO: need test
-        config.plugins.delete('prefetch') // TODO: need test
-
-        // set svg-sprite-loader
-        config.module
-            .rule('svg')
-            .exclude.add(resolve('src/icons'))
-            .end()
-        config.module
-            .rule('icons')
-            .test(/\.svg$/)
-            .include.add(resolve('src/icons'))
-            .end()
-            .use('svg-sprite-loader')
-            .loader('svg-sprite-loader')
-            .options({
-                symbolId: 'icon-[name]'
-            })
-            .end()
-
-        // set preserveWhitespace
-        config.module
-            .rule('vue')
-            .use('vue-loader')
-            .loader('vue-loader')
-            .tap(options => {
-                options.compilerOptions.preserveWhitespace = true
-                return options
-            })
-            .end()
-        config
-            .when(process.env.NODE_ENV === 'development',
-                config => config.devtool('cheap-source-map')
-            )
-
-        config
-            .when(process.env.NODE_ENV !== 'development',
-                config => {
-                    config
-                        .plugin('ScriptExtHtmlWebpackPlugin')
-                        .after('html')
-                        .use('script-ext-html-webpack-plugin', [{
-                            inline: /runtime\..*\.js$/
-                        }])
-                        .end()
-                    config
-                        .optimization.splitChunks({
-                        chunks: 'all',
-                        cacheGroups: {
-                            libs: {
-                                name: 'chunk-libs',
-                                test: /[\\/]node_modules[\\/]/,
-                                priority: 10,
-                                chunks: 'initial' // only package third parties that are initially dependent
-                            },
-                            elementUI: {
-                                name: 'chunk-elementUI', // split elementUI into a single package
-                                priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                                test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-                            },
-                            commons: {
-                                name: 'chunk-commons',
-                                test: resolve('src/components'), // can customize your rules
-                                minChunks: 3, //  minimum common number
-                                priority: 5,
-                                reuseExistingChunk: true
-                            }
-                        }
-                    })
-                    config.optimization.runtimeChunk('single')
+                // `globalVars` 定义全局对象，可加入全局变量
+                globalVars: {
+                    primary: '#333'
                 }
-            )
+            }
+        }
+    },
+    devServer: {
+        overlay: { // 让浏览器 overlay 同时显示警告和错误
+            warnings: true,
+            errors: true
+        },
+        host: "localhost",
+        port: 8080, // 端口号
+        https: false, // https:{type:Boolean}
+        open: false, //配置自动启动浏览器
+        hotOnly: true, // 热更新
+        // proxy: 'http://localhost:8080'   // 配置跨域处理,只有一个代理
+        proxy: { //配置多个跨域
+            "/api": {
+                target: "http://localhost:8080",
+                changeOrigin: true,
+                // ws: true,//websocket支持
+                secure: false,
+                pathRewrite: {
+                    "^/api": "/"
+                }
+            },
+        }
     }
 }

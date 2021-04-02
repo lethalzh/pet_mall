@@ -178,7 +178,8 @@
 
         },
         created() {
-            if(this.$route.params.o_id!=''){
+            console.log(this.$route.params.o_id,this.$route.params.o_id!='')
+            if(this.$route.params.o_id!=undefined ){
                 let o_id= this.$route.params.o_id
                 this.getOderCom(o_id)
             }

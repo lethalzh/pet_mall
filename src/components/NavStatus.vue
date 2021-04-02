@@ -9,7 +9,8 @@
                         <el-link :underline="false" href="/register">[免费注册]</el-link>
                     </span>
                     <span v-else>
-                         你好！！{{$getState('user','userName')}}
+                         <span>你好！！{{$getState('user','userName')}}</span>
+                        <span class="ml15" @click="out">[退出]</span>
                     </span>
                 </div>
                 <div class="rightHeader">
@@ -202,6 +203,15 @@
                     this.$message.error('导航数据获取失败');
                 }
             },
+            async getCartNum(){
+                let id= sessionStorage.getItem('userId');
+                let [err,res] = await this.$apis.home.getCartNum({id:id})
+                if(res.msg=='success')
+                    this.cartInNum= res.data
+                else {
+                        this.$message.error( res.data);
+                }
+            },
             aniHover(){
                 this.$refs.spUl.style.display="block";
                 this.$refs.spanUl.style.display="none";
@@ -228,6 +238,14 @@
                 this.$refs.mybr.style.backgroundColor=str;
                 window.location.href=`${this.$getState('dict','thisUrl')}`
             },
+            out(){
+                sessionStorage.setItem('token','')
+                sessionStorage.setItem('userName','')
+                sessionStorage.setItem('userId','')
+                this.$setState('user','userName','')
+                this.$setState('user','userId','')
+                this.$setState('user','token','')
+            }
         },
         created() {
             this.mySearch=this.search
@@ -240,6 +258,7 @@
             if(this.mode==0){
                 this.getCarousel();
                 this.getNavData();
+                this.getCartNum()
             }else if(this.mode==1){
                 this.getNavData();
             }
@@ -252,7 +271,10 @@
             }
         },
         updated() {
-
+            let name = sessionStorage.getItem('userName')
+            let id =   sessionStorage.getItem('userId')
+            this.$setState('user','userName',name||null)
+            this.$setState('user','userId',id||null)
         }
     }
 </script>
@@ -260,6 +282,10 @@
 <style scoped lang="scss">
     $catColor: #e63f85;
     $dogColor:#4d9b35;
+    .ml15{
+        margin-left: 15px;
+        cursor: pointer;
+    }
     .borderdog{
         border: $dogColor solid 2px;
     }

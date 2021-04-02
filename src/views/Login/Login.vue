@@ -47,6 +47,7 @@
                     this.$setState('user','userName',res.data.name)
                     this.$setState('user','userId',res.data.id)
                     this.$setState('user','token',res.token)
+                    sessionStorage.setItem('token',res.token)
                     sessionStorage.setItem('userName',res.data.name)
                     sessionStorage.setItem('userId',res.data.id)
                     this.$message({

@@ -87,6 +87,14 @@ export function getOrder(params) {
 	})
 }
 
+//获取购物车商品数量
+export function getCartNum(params) {
+	return request({
+		url: '/user/getcartnum',
+		method: 'post',
+		params
+	})
+}
 // export function getProducts_num(urlParam){
 // 	return request({
 // 		url: '/products_num/{Animal}',

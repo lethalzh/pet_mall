@@ -171,7 +171,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss" scoped>
     .highlights-text {
         color: #ff5134 !important;
     }
