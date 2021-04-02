@@ -160,6 +160,7 @@
             this.getAddress()
             this.totalPrice= this.$route.params.totalPrice
             let  commodity= this.$route.params.commodity
+            console.log(commodity,'commodity')
         }
     }
 </script>

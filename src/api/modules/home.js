@@ -78,6 +78,15 @@ export function eidtAddress(params) {
 		params
 	})
 }
+//获取订单信息
+export function getOrder(params) {
+	return request({
+		url: '/user/getorder',
+		method: 'post',
+		params
+	})
+}
+
 // export function getProducts_num(urlParam){
 // 	return request({
 // 		url: '/products_num/{Animal}',

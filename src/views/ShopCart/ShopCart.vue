@@ -65,7 +65,10 @@
                 </el-table>
                <div class="btmTable">
                    <div><router-link to="/product"><el-button type="primary">继续购物</el-button></router-link></div>
-                   <div class="rightButm"><p>已优惠：<span>${{(concession-totalPrice).toFixed(2)}}</span>   总价格：<span>${{totalPrice}}</span></p><el-button type="primary" @click="Settlement()">去结算</el-button></div>
+                   <div class="rightButm"><p>已优惠：<span>${{(concession-totalPrice).toFixed(2)}}</span> 
+                       总价格：<span>${{totalPrice}}</span></p>
+                       <el-button type="primary" @click="Settlement()">去结算</el-button>
+                   </div>
                </div>
             </div>
         </div>
@@ -100,6 +103,15 @@
                     });
                 }
             },
+            async getOderCom(oid){
+                let [err,res] = await this.$apis.product.getOerderCart({oid:oid});
+                if(res.msg=='success'){
+                    this.tableData = res.data
+                }
+                else{
+                    console.log( res.data)
+                }
+            },
             async deleteCol(dId){
                 let [err,res] = await this.$apis.product.delectCart({did:dId})
                 if(res.msg=='success'){
@@ -129,6 +141,7 @@
             },
             async Settlement(){
                 if(this.multipleSelection.length!=0){
+                   // console.log(this.multipleSelection,'this.multipleSelection------------------')
                     this.$router.push({name:'odergroup',
                         params:{commodity:this.multipleSelection,totalPrice:this.totalPrice}
                     })
@@ -162,9 +175,18 @@
                 // }
 
             }
+
         },
         created() {
-            this.getCart();
+            if(this.$route.params.o_id!=''){
+                let o_id= this.$route.params.o_id
+                this.getOderCom(o_id)
+            }
+            else
+                this.getCart();
+
+            // this.getOderCom('20210329202113')
+            // this.getCart();
         },
     }
 </script>

@@ -26,7 +26,14 @@ export function getDetails(urlParam){
 }
 
 
-
+//根据订单号获取商品
+export function getOerderCart(urlParam){
+    return request({
+        url: '/products/getcart/{oid}',
+        method: 'get',
+        urlParam
+    })
+}
 
 //获取购物车
 export function getCart(params){
