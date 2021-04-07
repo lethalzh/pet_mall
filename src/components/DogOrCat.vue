@@ -77,29 +77,29 @@
         },
         methods:{
             dogboxHover(){
-                this.products_num=this.numS.dog
-                this.Ttext=this.dogtext
-                this.bigImg=this.bigdog
+                this.products_num=this.numS.dog;
+                this.Ttext=this.dogtext;
+                this.bigImg=this.bigdog;
                 this.$refs.leftPet.style.backgroundColor='#4d9b35'
             },
             catboxHover(){
-                this.products_num=this.numS.cat
-                this.Ttext=this.cattext
-                this.bigImg=this.bigcat
+                this.products_num=this.numS.cat;
+                this.Ttext=this.cattext;
+                this.bigImg=this.bigcat;
                 this.$refs.leftPet.style.backgroundColor='#e63f85'
             },
             setStats(anm){
-                sessionStorage.setItem('Animal',anm)
-                this.$setState('cache','Animal',anm)
-                this.$refs.DogOrCat.style.display='none'
+                sessionStorage.setItem('Animal',anm);
+                this.$setState('cache','Animal',anm);
+                this.$refs.DogOrCat.style.display='none';
                 this.$refs.selectBox.style.display='none'
                 // this.$bus.$emit('SetStats',anm)
             },
             async getSum(){
-               let [err,res] =await this.$apis.home.getProducts_num()
+               let [err,res] =await this.$apis.home.getProducts_num();
                 if(res.msg=='success'){
                     this.numS=res.products_num;
-                    this.products_num=this.numS.dog
+                    this.products_num=this.numS.dog;
                     this.$setState('cache','AnimalSum',this.numS)
                 }
             },
@@ -135,7 +135,7 @@
         width: 100vw;
         height: 100vh;
         background-color:rgba(0,0,0,0.6) ;
-        z-index: 100;
+        z-index: 1000;
     }
 .DogOrCat{
     width: 880px;

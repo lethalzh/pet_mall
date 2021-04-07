@@ -12,6 +12,8 @@
     "awe-dnd": "^0.3.4",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.0.0",
+    "dayjs": "^1.10.4",
     "echarts": "^5.0.2",
     "element-china-area-data": "^5.0.2",
     "element-ui": "^2.15.0",
@@ -34,6 +36,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "video.js": "^7.11.4",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

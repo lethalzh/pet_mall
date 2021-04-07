@@ -16,11 +16,11 @@
                 <div class="rightHeader">
                     <span v-if="$getState('user','userName')!=null">
                         <el-link :underline="false" href="/shopcart"><i class="el-icon-shopping-cart-1"></i> 购物车</el-link>
-                         <el-link :underline="false" href="/order"><i class="el-icon-s-order"></i>我的订单</el-link>
+                         <el-link :underline="false" href="/myInfo"><i class="el-icon-s-order"></i>我的订单</el-link>
                     </span>
                     <span v-else>
-                          <el-link :underline="false" href="/shopcart"><i class="el-icon-shopping-cart-1"></i> 购物车</el-link>
-                         <el-link :underline="false" href="/order"><i class="el-icon-s-order"></i>我的订单</el-link>
+                          <el-link :underline="false" href="/login"><i class="el-icon-shopping-cart-1"></i> 购物车</el-link>
+                         <el-link :underline="false" href="/login"><i class="el-icon-s-order"></i>我的订单</el-link>
                     </span>
                     <el-link :underline="false" href="" type="danger">问题反馈</el-link>
                 </div>
@@ -44,9 +44,9 @@
             </div>
         </div>
 
-        <div class="navBody" v-if="mode!=2">
+        <div class="navBody" v-if="mode==1">
             <div class="navSpan">
-                <div class="spans" ref="ani"  @mouseenter="aniHover">{{$getState('cache','Animal')=='dog'?'狗狗':'猫猫'}}
+                <div class="spans" ref="ani"  @mouseenter="aniHover" @mouseleave="leav">{{$getState('cache','Animal')=='dog'?'狗狗':'猫猫'}}
                     <i class="doubledown"></i>
                     <ul class="spUl" ref="spUl" :class="mode==0?'navCarousel':'disNone'">
                         <li class="dog_box" @click="setStats('dog')">
@@ -66,7 +66,7 @@
                     </ul>
                 </div>
 
-                <div class="spans" ref="sp" @mouseenter="spHover">商品分类
+                <div class="spans" ref="sp" @mouseenter="spHover" @mouseleave="leav2">商品分类
                     <i class="sdown"></i>
                     <ul class="spanUl" ref="spanUl">
                         <li v-for="(item,index) of titles " :key="index">
@@ -143,6 +143,105 @@
             </div>
         </div>
 
+        <div class="navBody" v-else-if="mode!=2">
+            <div class="navSpan">
+                <div class="spans" ref="ani"  @mouseenter="aniHover">{{$getState('cache','Animal')=='dog'?'狗狗':'猫猫'}}
+                    <i class="doubledown"></i>
+                    <ul class="spUl" ref="spUl">
+                        <li class="dog_box" @click="setStats('dog')">
+                            <span class="imgDog"></span>
+                            <p><span>{{$getState('cache','AnimalSum').dog}}</span>种精选宝贝</p>
+                            <a class="inmain" v-if="$getState('cache','Animal') =='dog'">正在狗狗站溜达</a>
+                            <a class="doga" v-else>切换到狗狗站</a>
+                            <img src="@/assets/images/dogpack.jpg" >
+                        </li>
+                        <li class="cat_box" @click="setStats('cat')">
+                            <span class="imgCat"></span>
+                            <p><span>{{$getState('cache','AnimalSum').cat}}</span>种精选宝贝</p>
+                            <a class="inmain" v-if="$getState('cache','Animal') =='cat'">正在猫猫站溜达</a>
+                            <a class="cata" v-else>切换到猫猫站</a>
+                            <img src="@/assets/images/catpack.jpg" >
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="spans" ref="sp" @mouseenter="spHover">商品分类
+                    <i class="sdown"></i>
+                    <ul class="spanUl" ref="spanUl">
+                        <li v-for="(item,index) of titles " :key="index">
+                            <p>
+                                <span class="a" @click="toProduct(item[0].titel)">{{item[0].titel}}</span>
+                                <span class="a" @click="toProduct(item[1].titel)">{{item[1].titel}}</span>
+                            </p>
+                            <div class="navLeft" ref="navLeft" :key="index+'a'">
+                                <div class="card" >
+                                    <div>
+                                        <div class="tit">
+                                            <img :src="item[0].timg" >
+                                            <span class="a" @click="toProduct(item[0].titel)" >{{$getState('cache','Animal')=='dog'?'狗狗':'猫猫'}}{{item[0].titel}}</span>
+                                            <i></i>
+                                        </div>
+                                        <hr>
+                                        <div class="cont" v-for="(ty,j) of item[0].type" :key="j">
+                                            <span class="ab" @click="toProduct(ty.name,item[0].titel)" >{{ty.name}}</span>
+                                            <img :src="ty.nameimg" alt="">
+                                            <span v-for="(sup,i) of ty.subtitle" class="a" @click="toProduct(ty.name,sup.subtit)" :key="i">{{sup.subtit}}</span>
+                                        </div>
+                                        <hr>
+                                        <div>
+                                            <div class="tit">
+                                                <img :src="item[1].timg" >
+                                                <span class="a" @click="toProduct(item[1].titel)">{{$getState('cache','Animal')=='dog'?'狗狗':'猫猫'}}{{item[1].titel}}</span>
+                                                <i></i>
+                                            </div>
+                                            <hr>
+                                            <div class="cont" v-for="(ty,j) of item[1].type" :key="j">
+                                                <span class="ab" @click="toProduct(ty.name)" >{{ty.name}}</span>
+                                                <img :src="ty.nameimg" alt="">
+                                                <span v-for="(sup,i) of ty.subtitle" class="a" @click="toProduct(sup.subtit)" :key="i">{{sup.subtit}}</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+                        <li style="display: flex;align-items: center;justify-content: center; color: #666;"><img src="@/assets/images/active.png">正在进行品牌特卖</li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="navUl">
+                <ul>
+                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</li>
+                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</li>
+                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</li>
+                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</li>
+                </ul>
+                <div :class="mode==0?'navCarousel':'disNone'">
+                    <el-carousel height="360px">
+                        <el-carousel-item v-for="item of carousels" :key="item.cid">
+                            <router-link :to="item.clink">
+                                <img :src="item.cimg" alt="" style="width: 770px;height: 360px"></router-link>
+                        </el-carousel-item>
+                    </el-carousel>
+                </div>
+            </div>
+            <div class="dogbr" ref="mybr"></div>
+            <div  :class="mode==0?'navRight':'disNone'">
+                <div>
+                    <img src="@/assets/images/about1.jpg" alt="">
+                </div>
+                <div>
+                    <img src="@/assets/images/about2.jpg" alt="">
+                </div>
+                <div>
+                    <img src="@/assets/images/about3.png" alt="">
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -168,22 +267,23 @@
                 welcomeCat:'喵喵，欢迎来宠爱',
                 welcomeDog:'汪汪，欢迎来宠爱',
                 dogLogo:dogLogo,catLogo:catLogo,dogCart:dogCart,catCart:catCart,
-                Animal:'dog',
+                Animal: 'dog',
                 cartInNum:0,
                 carousels:[],
                 titles:[],
-                mySearch:''
+                mySearch:'',
+                isShow:null,
             }
         },
         methods:{
             toProduct(Url,ur=''){
-                let str=Url
+                let str=Url;
                 if (ur!='')
-                    str +='+'+ur
+                    str +='+'+ur;
                 window.location.href=`${this.$getState('dict','thisUrl')}product/${str}`;
             },
             async getCarousel(){
-                let [err,res] = await this.$apis.home.getCarousels()
+                let [err,res] = await this.$apis.home.getCarousels();
                if(res.msg=='success'){
                    this.carousels= res.data;
                }else {
@@ -191,7 +291,7 @@
                }
            },
             async getNavData(){
-                let [err,res] = await this.$apis.home.getNavData({Animal:this.$getState('cache','Animal')})
+                let [err,res] = await this.$apis.home.getNavData({Animal:this.$getState('cache','Animal')});
                 if(res.msg=='success'){
                     this.titles= res.data;
                     let arr=this.titles,Arrs=[];
@@ -205,60 +305,80 @@
             },
             async getCartNum(){
                 let id= sessionStorage.getItem('userId');
-                let [err,res] = await this.$apis.home.getCartNum({id:id})
+                let [err,res] = await this.$apis.home.getCartNum({id:id});
                 if(res.msg=='success')
-                    this.cartInNum= res.data
+                    this.cartInNum= res.data;
                 else {
                         this.$message.error( res.data);
                 }
             },
+            leav(){
+                this.$refs.spUl.style.display="block";
+                this.$refs.spanUl.style.display="none";
+                let str2 = this.$getState('cache','Animal') =='dog'?' dogbg':' catbg';
+                this.$refs.ani.classList.value='spans'+str2;
+                this.$refs.sp.classList.value='spans'+str2;
+                this.$refs.spUl.style.display="none";
+                this.$refs.spanUl.style.display="none";
+            },
+            leav2(){
+
+                        this.$refs.spUl.style.display="none";
+                        this.$refs.spanUl.style.display="block";
+                        let str = this.$getState('cache','Animal') =='dog'?'#62a727':'#e74085';
+                        let str2 = this.$getState('cache','Animal') =='dog'?' dogbg':' catbg';
+                        this.$refs.ani.classList.value='spans'+str2;
+                        this.$refs.sp.classList.value='spans'+str2;
+                        for(let i of this.$refs.navLeft)
+                            i.style='border-color:'+  str;
+                        this.$refs.spUl.style.display="none";
+                        this.$refs.spanUl.style.display="none";
+            },
             aniHover(){
                 this.$refs.spUl.style.display="block";
                 this.$refs.spanUl.style.display="none";
-                let str2 = this.$getState('cache','Animal') =='dog'?' dogbg':' catbg'
-                this.$refs.ani.classList.value='spans'+str2
+                let str2 = this.$getState('cache','Animal') =='dog'?' dogbg':' catbg';
+                this.$refs.ani.classList.value='spans'+str2;
                 this.$refs.sp.classList.value='spans'+str2
             },
             spHover(){
                 this.$refs.spUl.style.display="none";
                 this.$refs.spanUl.style.display="block";
-                let str = this.$getState('cache','Animal') =='dog'?'#62a727':'#e74085'
-                let str2 = this.$getState('cache','Animal') =='dog'?' dogbg':' catbg'
-                this.$refs.ani.classList.value='spans'+str2
-                this.$refs.sp.classList.value='spans'+str2
+                let str = this.$getState('cache','Animal') =='dog'?'#62a727':'#e74085';
+                let str2 = this.$getState('cache','Animal') =='dog'?' dogbg':' catbg';
+                this.$refs.ani.classList.value='spans'+str2;
+                this.$refs.sp.classList.value='spans'+str2;
                 for(let i of this.$refs.navLeft)
                     i.style='border-color:'+  str;
-                // this.$refs.navLeft.style.backgroundColor=str
-
             },
             setStats(anm){
-                sessionStorage.setItem('Animal',anm)
-                this.$setState('cache','Animal',anm)
-                let str = anm =='cat'?'#62a727':'#e74085'
+                sessionStorage.setItem('Animal',anm);
+                this.$setState('cache','Animal',anm);
+                let str = anm =='dog'?'#62a727':'#e74085';
                 this.$refs.mybr.style.backgroundColor=str;
                 window.location.href=`${this.$getState('dict','thisUrl')}`
             },
             out(){
-                sessionStorage.setItem('token','')
-                sessionStorage.setItem('userName','')
-                sessionStorage.setItem('userId','')
-                this.$setState('user','userName','')
-                this.$setState('user','userId','')
+                sessionStorage.setItem('token','');
+                sessionStorage.setItem('userName','');
+                sessionStorage.setItem('userId','');
+                this.$setState('user','userName','');
+                this.$setState('user','userId','');
                 this.$setState('user','token','')
             }
         },
         created() {
-            this.mySearch=this.search
-            console.log(sessionStorage.getItem('Animal'),'naV-----------')
-            this.Animal =sessionStorage.getItem('Animal')
-            let name = sessionStorage.getItem('userName')
-            let id =   sessionStorage.getItem('userId')
-            this.$setState('user','userName',name||null)
-            this.$setState('user','userId',id||null)
+            this.mySearch=this.search;
+            console.log(sessionStorage.getItem('Animal'),'naV-----------');
+            this.Animal =sessionStorage.getItem('Animal');
+            let name = sessionStorage.getItem('userName');
+            let id =   sessionStorage.getItem('userId');
+            this.$setState('user','userName',name||null);
+            this.$setState('user','userId',id||null);
             if(this.mode==0){
                 this.getCarousel();
                 this.getNavData();
-                this.getCartNum()
+                this.getCartNum();
             }else if(this.mode==1){
                 this.getNavData();
             }
@@ -266,14 +386,19 @@
         },
         mounted() {
             if(this.mode==0) {
-                let str = this.$getState('cache', 'Animal') == 'cat' ? '#62a727' : '#e74085'
+                let str = this.$getState('cache', 'Animal') == 'dog' ? '#62a727' : '#e74085';
                 this.$refs.mybr.style.backgroundColor = str;
             }
+            if(this.mode==1) {
+                this.$refs.spUl.style.display="none";
+                this.$refs.spanUl.style.display="none";
+            }
+
         },
         updated() {
-            let name = sessionStorage.getItem('userName')
-            let id =   sessionStorage.getItem('userId')
-            this.$setState('user','userName',name||null)
+            let name = sessionStorage.getItem('userName');
+            let id =   sessionStorage.getItem('userId');
+            this.$setState('user','userName',name||null);
             this.$setState('user','userId',id||null)
         }
     }
@@ -282,6 +407,12 @@
 <style scoped lang="scss">
     $catColor: #e63f85;
     $dogColor:#4d9b35;
+    .dsnone{
+        display: none;
+    }
+    .dsbk{
+        display: block;
+    }
     .ml15{
         margin-left: 15px;
         cursor: pointer;
@@ -363,6 +494,7 @@
             width: 99.1vw;
             position: absolute;
             top: 176px;
+            z-index: 0;
             left: 0;
         }
         .catbr{
@@ -459,6 +591,7 @@
             .navSpan{
                 display: flex;
                 position: relative;
+                z-index: 100;
                 .navLeft{
                     border: 1px solid  ;
                     background: #f5f5f5;
@@ -557,7 +690,7 @@
 
                     .spUl{
                         position: absolute;
-                        margin-top: 5px;
+                        margin-top: 1px;
                         list-style: none;
                         width: 187px;
                         background-color: #f2f2f2;
@@ -625,7 +758,7 @@
                     .spanUl{
                         display: none;
                         position: absolute;
-                        margin-top: 5px;
+                        margin-top: 1px;
                         list-style: none;
                         width: 187px;
                         margin-left: -113px;
@@ -668,6 +801,11 @@
                     }
                     &:hover i{
                         transform:rotate(180deg);
+                    }
+                }
+                .spans:hover {
+                    .spUl{
+                        display: block;
                     }
                 }
             }

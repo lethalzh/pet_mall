@@ -73,9 +73,9 @@
         methods:{
             async getAddress(){
                 let userId = this.$getState('user','userId')||sessionStorage.getItem('userId');
-                let [err,res] = await this.$apis.home.getAddress({id:userId})
+                let [err,res] = await this.$apis.home.getAddress({id:userId});
                 if(res.msg=='success'){
-                    console.log(res.data,'data')
+                    console.log(res.data,'data');
                         this.addressArr=res.data
                 } else {
                     this.$message({
@@ -85,8 +85,8 @@
                 }
             },
             async  setTool(id,flag){
-                let selectAdd={}
-                this.inserORedit=false
+                let selectAdd={};
+                this.inserORedit=false;
                 if(flag==1){
                     for(let i of this.addressArr){
                         i.add_flag=i.add_id===id?'true':'false'
@@ -96,12 +96,12 @@
                         if(i.add_id===id)
                         this.editData=i;
                     }
-                    this.editData.id=id
-                    this.inserORedit=true
+                    this.editData.id=id;
+                    this.inserORedit=true;
                     this.newAddres()
                 }else {
-                    this.inserORedit=false
-                    let [err,res] = await this.$apis.home.delectAddress({add_id:id})
+                    this.inserORedit=false;
+                    let [err,res] = await this.$apis.home.delectAddress({add_id:id});
                     if(res.msg=='success'){
                         this.$message({
                             message:res.data,
@@ -120,19 +120,19 @@
                 this.$refs.Addre.openORclose()
             },
             ative(ref){
-                let arr=['refi1','refi2','refi3']
+                let arr=['refi1','refi2','refi3'];
                     for(let i=0;i< 3;i++){
                         if(i==ref)
-                            this.$refs[arr[i]].className='i'
+                            this.$refs[arr[i]].className='i';
                         else
                             this.$refs[arr[i]].className=''
                     }
                 this.active=ref
             },
             async setOder(){
-                let  commodity= this.$route.params.commodity
+                let  commodity= this.$route.params.commodity;
                 let id = this.$getState('user','userId')||sessionStorage.getItem('userId');
-                let add_id=0
+                let add_id=0;
                 for(let i of this.addressArr){
                     if(i.add_flag=='true')
                         add_id=i.add_id
@@ -142,12 +142,13 @@
                     totalPrice:this.totalPrice,
                     id:id,add_id:add_id,
                     deli:this.deli[this.active]
-                })
+                });
                 if(res.msg=='success'){
                     this.$message({
                         message: '订单生成成功！',
                         type: 'success'
                     });
+                    this.$router.push({name:'myinfo'})
                 }else{
                     this.$message({
                         message: '订单生成失败！',
@@ -157,9 +158,9 @@
             }
         },
         created() {
-            this.getAddress()
-            this.totalPrice= this.$route.params.totalPrice
-            let  commodity= this.$route.params.commodity
+            this.getAddress();
+            this.totalPrice= this.$route.params.totalPrice;
+            let  commodity= this.$route.params.commodity;
             console.log(commodity,'commodity')
         }
     }

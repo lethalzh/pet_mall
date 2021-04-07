@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home/Home.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -44,13 +44,22 @@ const routes = [
     path: '/myInfo',
     name: 'myinfo',
     component: () => import('../views/MyInfo/MyInfo.vue')
-  }
-]
+  },{
+    path: '/videos',
+    name: 'Videos',
+    component: () => import('../views/Videos/Videos.vue')
+  },
+    {
+        path: '/aboutinfo',
+        name: 'AboutInfo',
+        component: () => import('../views/AboutInfo/AboutInfo.vue')
+    }
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
 export default router

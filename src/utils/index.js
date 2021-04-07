@@ -15,10 +15,10 @@ export function formatTime(time, option) {
     } else {
         time = +time
     }
-    const d = new Date(time)
-    const now = Date.now()
+    const d = new Date(time);
+    const now = Date.now();
 
-    const diff = (now - d) / 1000
+    const diff = (now - d) / 1000;
 
     if (diff < 30) {
         return '刚刚'
@@ -53,19 +53,19 @@ export function formatTime(time, option) {
  * @returns {Object}
  */
 export function getQueryObject(url) {
-    url = url == null ? location.href : url
-    var search = url.substring(url.lastIndexOf('?') + 1)
+    url = url == null ? location.href : url;
+    var search = url.substring(url.lastIndexOf('?') + 1);
     if (search.indexOf("#") != -1)
-        search = search.substring(0, search.indexOf("#"))
-    const obj = {}
-    const reg = /([^?&=]+)=([^?&=]*)/g
+        search = search.substring(0, search.indexOf("#"));
+    const obj = {};
+    const reg = /([^?&=]+)=([^?&=]*)/g;
     search.replace(reg, (rs, $1, $2) => {
-        const name = decodeURIComponent($1)
-        let val = decodeURIComponent($2)
-        val = String(val)
-        obj[name] = val
+        const name = decodeURIComponent($1);
+        let val = decodeURIComponent($2);
+        val = String(val);
+        obj[name] = val;
         return rs
-    })
+    });
     return obj
 }
 
@@ -81,14 +81,14 @@ export function deepClone(source) {
     if (!source && typeof source !== 'object') {
         throw new Error('error arguments', 'deepClone')
     }
-    const targetObj = source.constructor === Array ? [] : {}
+    const targetObj = source.constructor === Array ? [] : {};
     Object.keys(source).forEach(keys => {
         if (source[keys] && typeof source[keys] === 'object') {
             targetObj[keys] = deepClone(source[keys])
         } else {
             targetObj[keys] = source[keys]
         }
-    })
+    });
     return targetObj
 }
 
@@ -97,8 +97,8 @@ export function deepClone(source) {
  * @returns {string}
  */
 export function createUniqueString() {
-    const timestamp = new Date().getTime() + ''
-    const randomNum = parseInt((1 + Math.random()) * 65536) + ''
+    const timestamp = new Date().getTime() + '';
+    const randomNum = parseInt((1 + Math.random()) * 65536) + '';
     // id必须以字母开头
     var result = [];
     let n = 4; //随机生成4个字母
@@ -118,7 +118,7 @@ export function createUniqueString() {
  * @param {Object} field 字段名 为null，表示以自身做key
  */
 export function arrayToMap(list, field = null, vField = null) {
-    var map = {}
+    var map = {};
     for (var i in list) {
         map[field ? (list[i][field] + "") : list[i]] = vField ? list[i][vField] : list[i]
     }
@@ -130,15 +130,15 @@ export function arrayToMap(list, field = null, vField = null) {
  * @param {Object} map
  */
 export function mapToOpsArray(map, keyField, valueField) {
-    var list = []
+    var list = [];
     if (keyField && keyField.indexOf("|") != -1)
-        keyField = keyField.split("|")
+        keyField = keyField.split("|");
     else
-        keyField = [keyField, keyField]
+        keyField = [keyField, keyField];
     if (valueField && valueField.indexOf("|") != -1)
-        valueField = valueField.split("|")
+        valueField = valueField.split("|");
     else
-        valueField = [valueField, valueField]
+        valueField = [valueField, valueField];
     for (var i in map) {
         list.push({
             [keyField[1] || 'value']: keyField && typeof map[i] != 'string' ? map[i][keyField[0]] : (/^\d+$/.test(i) ? +i : i),
@@ -155,7 +155,7 @@ export function mapToOpsArray(map, keyField, valueField) {
  * @returns {Array}
  */
 export function getFieldValFromArray(datas, field) {
-    var list = []
+    var list = [];
     for (var d of datas) {
         list.push(d[field])
     }
@@ -170,9 +170,9 @@ export function getFieldValFromArray(datas, field) {
  * @param {Object} newField 转译后的值的存储字段，默认使用'fo_'+field
  */
 export function fromatArrayDictField(list, field, dictName, newField, dictFieldName) {
-    var signle = false
+    var signle = false;
     if (!Array.isArray(list)) {
-        list = [list]
+        list = [list];
         signle = true
     }
     for (var i in list) {
@@ -190,10 +190,10 @@ export function fromatArrayDictField(list, field, dictName, newField, dictFieldN
  * @param {Object} newField
  */
 export function fromatArrayTimeField(list, field, newField, format = 'YYYY-MM-DD hh:mm:ss') {
-    var dayjs = require('dayjs')
-    var signle = false
+    var dayjs = require('dayjs');
+    var signle = false;
     if (!Array.isArray(list)) {
-        list = [list]
+        list = [list];
         signle = true
     }
     for (var i in list) {
@@ -209,14 +209,14 @@ export function fromatArrayTimeField(list, field, newField, format = 'YYYY-MM-DD
  * @returns {string}
  */
 export function encrypt(content, cloud) {
-    var CryptoJS = require('crypto-js')
+    var CryptoJS = require('crypto-js');
     // AES加密
-    console.log(cloud ? $$vue.$settings.cloudAesKey : $$vue.$settings.aesKey)
-    var key = CryptoJS.enc.Utf8.parse(cloud ? $$vue.$settings.cloudAesKey : $$vue.$settings.aesKey) // 与后台规定好的密码
+    console.log(cloud ? $$vue.$settings.cloudAesKey : $$vue.$settings.aesKey);
+    var key = CryptoJS.enc.Utf8.parse(cloud ? $$vue.$settings.cloudAesKey : $$vue.$settings.aesKey); // 与后台规定好的密码
     var encryptResult = CryptoJS.AES.encrypt(content, key, {
         mode: CryptoJS.mode.ECB, // 模式
         padding: CryptoJS.pad.Pkcs7 // 补全对齐   Pkcs7就是pkcs5padding
-    })
+    });
     return encryptResult.toString()
 }
 
@@ -225,15 +225,15 @@ export function encrypt(content, cloud) {
  * @param {Array,String}
  */
 export function killObjRepeat(arr, property) {
-    if (arr instanceof Array == false) return
-    var filterObj = {}
+    if (arr instanceof Array == false) return;
+    var filterObj = {};
     arr = arr.reduce((item, next) => {
         if (!filterObj[next[property]]) {
-            filterObj[next[property]] = true
+            filterObj[next[property]] = true;
             item.push(next)
         }
         return item
-    }, [])
+    }, []);
     return arr
 }
 
@@ -250,10 +250,10 @@ export function getDelFieldsObj(obj, fields, exclud = false, clone = true) {
         obj = deepClone(obj)
     }
     for (var i in obj) {
-        var has = false
+        var has = false;
         for (var i2 in fields) {
             if (fields[i2] == i) {
-                has = true
+                has = true;
                 break
             }
         }
@@ -277,19 +277,19 @@ export function getDelFieldsObj(obj, fields, exclud = false, clone = true) {
  * @returns {Promise<*>}
  */
 export async function queryCacheData(apiModule, api, post, dictVar, dictObjKey) {
-    var datas = $$vue.$getState('cache', dictVar)
+    var datas = $$vue.$getState('cache', dictVar);
     if (!datas || (dictObjKey ? !dictVar[dictObjKey] : false)) {
         $$vue.$api[apiModule][api](post || {}).then(res => {
             if (!res)
-                return null
+                return null;
             else {
                 if (dictObjKey) {
-                    datas = datas || {}
+                    datas = datas || {};
                     datas[dictObjKey] = res.data
                 } else {
                     datas = res.data
                 }
-                $$vue.$setState('cache', dictVar, datas)
+                $$vue.$setState('cache', dictVar, datas);
                 return dictObjKey ? datas[dictObjKey] : datas
             }
         })
@@ -305,7 +305,7 @@ export async function queryCacheData(apiModule, api, post, dictVar, dictObjKey) 
  */
 export function recentDays(number = 0, includeToday = true) {
     if (Number.isSafeInteger(Math.abs(number))) {
-        let NumberDaysBefore = Date.now() - (includeToday ? number : number + 1) * 24 * 60 * 60 * 1000
+        let NumberDaysBefore = Date.now() - (includeToday ? number : number + 1) * 24 * 60 * 60 * 1000;
         return [dayjs(NumberDaysBefore).format('YYYYMMDDHHmmss'), dayjs(includeToday ? Date.now() : Date.now() - 24 * 60 * 60 * 1000).format('YYYYMMDDHHmmss')]
     } else {
         return [dayjs(Date.now() - 24 * 60 * 60 * 1000).format('YYYYMMDDHHmmss'), dayjs().format('YYYYMMDDHHmmss')]
@@ -317,7 +317,7 @@ export function recentDays(number = 0, includeToday = true) {
  * @returns {Object}
  */
 export function param2Obj(url) {
-    const search = url.split('?')[1]
+    const search = url.split('?')[1];
     if (!search) {
         return {}
     }
@@ -337,11 +337,11 @@ export function param2Obj(url) {
  * @returns {void}
  */
 export function redrawChartsWhenResize(instance) {
-    if (typeof instance.resize !== "function") throw new Error("请确认传入了正确的charts实例")
+    if (typeof instance.resize !== "function") throw new Error("请确认传入了正确的charts实例");
     let resizeChart = () => {
         instance.resize()
-    }
-    window.addEventListener('resize', resizeChart)
+    };
+    window.addEventListener('resize', resizeChart);
     // 注销事件与注册事件放在一起 提高可读性
     this.$once('hook:beforeDestroy', () => {
         window.removeEventListener('resize', resizeChart)
@@ -350,9 +350,9 @@ export function redrawChartsWhenResize(instance) {
 
 export function formatPicPath(pic) {
     if (!pic)
-        return ''
+        return '';
     if (pic.indexOf("http") != -1)
-        return pic
+        return pic;
     else
         return `${process.env.VUE_APP_BASE_API}/safety/file/downFile/${pic}`
 }
@@ -360,10 +360,10 @@ export function formatPicPath(pic) {
 export function downloadCanvas(canvasClass = null, url) {
     if (!canvasClass) {
         document.querySelectorAll('canvas').forEach(ins => {
-            const base64 = ins.toDataURL()
-            const el = document.createElement('a')
-            el.download = "下载"
-            el.href = base64
+            const base64 = ins.toDataURL();
+            const el = document.createElement('a');
+            el.download = "下载";
+            el.href = base64;
             el.click()
         })
     }
@@ -371,7 +371,7 @@ export function downloadCanvas(canvasClass = null, url) {
 
 // 过滤字段
 export function filterField(aimObject, fields = ['pageNum', 'pageSize']) {
-    let cloneObject = _.cloneDeep(aimObject)
+    let cloneObject = _.cloneDeep(aimObject);
     if (Object.prototype.toString.call(aimObject) !== "[object Object]" || !Array.isArray(fields)) {
         return aimObject
     }
@@ -384,9 +384,9 @@ export function filterField(aimObject, fields = ['pageNum', 'pageSize']) {
 
 //格式化违规类型种类
 export function formatViolationType(id, obj) {
-    let ViolationTypes = window.$$vue.$dictOpts.violationType
-    let length = ViolationTypes.length
-    let str = " "
+    let ViolationTypes = window.$$vue.$dictOpts.violationType;
+    let length = ViolationTypes.length;
+    let str = " ";
     for (let i = 0; i < length; i++) {
         if (parseInt(ViolationTypes[i].key) === id) {
             str = ViolationTypes[i].value
@@ -422,18 +422,18 @@ export function formatViolationType(id, obj) {
  */
 
 export function dictByBit(dictObj, value, separate = '、', result = "") {
-    if (Object.prototype.toString.call(dictObj) != "[object Object]") return ''
+    if (Object.prototype.toString.call(dictObj) != "[object Object]") return '';
 
-    let dictLocation = []
+    let dictLocation = [];
     Object.keys(dictObj).forEach(bit => {
         dictLocation.push(bit)
-    })
+    });
     if (dictObj[value]) {
         return (result ? (result + separate) : '') + dictObj[value]
     }
     for (let i = 1; i < 1024; i++) {
         if (value >> i === 1) {
-            let afterMove = value - dictLocation[i]
+            let afterMove = value - dictLocation[i];
             return dictByBit(dictObj, afterMove, separate, (result ? (result + separate) : '') + dictObj[dictLocation[i]])
         }
     }
@@ -448,25 +448,25 @@ export function dictByBit(dictObj, value, separate = '、', result = "") {
  */
 
 export function deleteFalsyField(params = {}, except = [null, undefined, false, ""], deepClone = true) {
-    if (Object.prototype.toString.call(params) !== "[object Object]") return params
-    let cloneParams
+    if (Object.prototype.toString.call(params) !== "[object Object]") return params;
+    let cloneParams;
     if (deepClone)
-        cloneParams = _.cloneDeep(params)
+        cloneParams = _.cloneDeep(params);
     else
-        cloneParams = params
+        cloneParams = params;
     Object.keys(cloneParams).forEach(key => {
         if (except.includes(cloneParams[key])) {
             delete cloneParams[key]
         }
-    })
+    });
     return cloneParams
 }
 //通过身份证号计算年龄和性别
 export function analyzeIDCard(IDCard) {
-    var sexAndAge = {}
+    var sexAndAge = {};
     // 获取用户身份证号码
     // var userCard = IDCard.replace(/\s/g, "");//正则去掉字符串中所有空格
-    var userCard = IDCard
+    var userCard = IDCard;
     // 如果身份证号码为undefind则返回空
     if (!userCard) {
         return sexAndAge
@@ -479,19 +479,19 @@ export function analyzeIDCard(IDCard) {
     }
     // 获取出生年月日
     // userCard.substring(6,10) + "-" + userCard.substring(10,12) + "-" + userCard.substring(12,14);
-    var yearBirth = userCard.substring(6, 10)
-    var monthBirth = userCard.substring(10, 12)
-    var dayBirth = userCard.substring(12, 14)
+    var yearBirth = userCard.substring(6, 10);
+    var monthBirth = userCard.substring(10, 12);
+    var dayBirth = userCard.substring(12, 14);
     // 获取当前年月日并计算年龄
-    var myDate = new Date()
-    var monthNow = myDate.getMonth() + 1
-    var dayNow = myDate.getDay()
-    var age = myDate.getFullYear() - yearBirth
+    var myDate = new Date();
+    var monthNow = myDate.getMonth() + 1;
+    var dayNow = myDate.getDay();
+    var age = myDate.getFullYear() - yearBirth;
     if (monthNow < monthBirth || (monthNow == monthBirth && dayNow < dayBirth)) {
         age--
     }
     // 得到年龄
-    sexAndAge.age = age
+    sexAndAge.age = age;
     // 返回性别和年龄
     return sexAndAge
 }
@@ -555,4 +555,11 @@ export function flashChecker() {
         hasFlash,
         flashVersion
     }
+}
+
+/**
+ * 唯一id生成
+ * */
+export function createRandomId() {
+    return (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5);
 }
