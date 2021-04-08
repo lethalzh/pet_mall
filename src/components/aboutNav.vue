@@ -5,9 +5,9 @@
                 <li v-for="(row,index) of AboutInfo" :key="index">
                     <a :href="'#aboutNav'+index">
                         <div>
-                            <el-image :src="row.Aimg"></el-image>
+                            <el-image :src="row.A_ico"></el-image>
                         </div>
-                        <p>{{row.Atitle}}</p>
+                        <p>{{row.A_title}}</p>
                     </a>
                 </li>
             </ul>
@@ -29,10 +29,10 @@
         },
         methods: {
             async getAboutInfo() {
-                let [err, res] = await this.$apis.other.getAboutInfo();
+                let [err, res] = await this.$apis.other.getAboutInfo({mode:false});
                 if (res.msg == 'success')
                     this.AboutInfo = res.data
-            }
+            },
         },
         created() {
             this.getAboutInfo()

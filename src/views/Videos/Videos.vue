@@ -73,7 +73,6 @@
             .vidTitle {
                 height: 22px;
                 background: url(../../assets/images/cmall-titBg.png) 0 50% repeat-x;
-
                 b {
                     height: 22px;
                     background: #fff;

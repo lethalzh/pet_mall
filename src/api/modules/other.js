@@ -22,10 +22,11 @@ export function getNavData(urlParam){
 }
 
 //获取aboutInfo img title
-export function getAboutInfo(){
+export function getAboutInfo(urlParam){
     return request({
-        url: '/other/getAboutInfo',
+        url: '/other/getAboutInfo/{mode}',
         method: 'get',
+        urlParam,
     })
 }
 
