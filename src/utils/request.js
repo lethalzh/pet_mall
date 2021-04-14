@@ -5,23 +5,24 @@ import store from '@/store'
 // import { getToken } from '@/utils/auth'
 import { getState, setState } from '../store' 
 // create an axios instance
-axios.Cancel
+axios.Cancel;
 
 const service = axios.create({
   //  10.76.28.30:8000
-  baseURL:'http://localhost:3000/',//"http://safetydd.zl9c.cn:8014/",// process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL:'http://localhost:3000/',// process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 60000 // request timeout
-})
+});
 
 // request interceptor
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    config.headers.Animal = sessionStorage.getItem('Animal')
-     config.headers.token = getState('user', 'token')||sessionStorage.getItem('token')
+    config.headers.Animal = getState('cache', 'Animal')||sessionStorage.getItem('Animal')||'dog';
+     console.log( getState('cache', 'Animal'),'--------------',sessionStorage.getItem('Animal'));
+    config.headers.token = getState('user', 'token')||sessionStorage.getItem('token');
     if (typeof config.params == 'string' || typeof config.params == 'number') {
-      config.url = `${config.url}/${config.params}`
+      config.url = `${config.url}/${config.params}`;
       delete config.params
     }
     if (!(config.urlParam === null || config.urlParam === undefined)) {
@@ -34,28 +35,28 @@ service.interceptors.request.use(
       delete config.urlParam
     }
     if (["post", "put", "delete"].indexOf(config.method.toLocaleLowerCase()) != -1) {
-      config.data = config.params
+      config.data = config.params;
       delete config.params
     } else {
-      var query = ""
+      var query = "";
       for (var i in config.params) {
         query += `&${i}=${config.params[i]}`
       }
       if (query) {
-        query = query.substr(1)
+        query = query.substr(1);
         config.url += (config.url.indexOf("?") == -1 ? "?" : '') + query
       }
       delete config.params
     }
-    console.log('++++++', config)
+    console.log('++++++', config);
     return config
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    console.log(error); // for debug
     return Promise.reject(error)
   }
-)
+);
 
 // response interceptor
 service.interceptors.response.use(
@@ -71,7 +72,7 @@ service.interceptors.response.use(
    */
   response => {
     // console.log(">>>>", response)
-    const res = response.data
+    const res = response.data;
     console.log('>>>查询结果：',res);
     if(res===null||res===undefined||typeof res=='string'){
       return res
@@ -81,7 +82,7 @@ service.interceptors.response.use(
       res.rc = 0
     }
     if (response.status != 200)
-      res.rc = -1
+      res.rc = -1;
     switch (res.rc) {
       // 当请求返回是的状态码正确是才返回数据
       case 0:
@@ -89,26 +90,26 @@ service.interceptors.response.use(
         // if(typeof response.config.configOptions.globalHandle === 'function') {
         //     response.config.configOptions.globalHandle(response, getState, setState)
         // }
-        return res
+        return res;
       // token无效时让用户返回登录、
       case 1:
-        sessionStorage.getItem('token') && Message.error('token过期，请重新登录')
-        window.$$vue.$router.replace("/login")
-        setState('cache', 'uploadStack', [])
+        sessionStorage.getItem('token') && Message.error('token过期，请重新登录');
+        window.$$vue.$router.replace("/login");
+        setState('cache', 'uploadStack', []);
         // login()
-        sessionStorage.clear()
-        throw res
+        sessionStorage.clear();
+        throw res;
       // 权限不足时返回上已经
       case 2:
-        Message.error('很抱歉，你的权限不足')
-        throw res
+        Message.error('很抱歉，你的权限不足');
+        throw res;
       default:
         throw res
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    let errMsg = ''
+    console.log('err' + error); // for debug
+    let errMsg = '';
     //  1.判断请求超时
     if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
       errMsg = '请求超时!'
@@ -120,10 +121,10 @@ service.interceptors.response.use(
       message: error.message,
       type: 'error',
       duration: 5 * 1000
-    })
+    });
 
     if (error.response) {
-      const data = error.response.data
+      const data = error.response.data;
       if (error.response.status === 400
         && data.code === 40240001) {
         window.$$vue.$router.replace("/login")
@@ -131,6 +132,6 @@ service.interceptors.response.use(
     }
     return Promise.reject(error)
   }
-)
+);
 
 export default service

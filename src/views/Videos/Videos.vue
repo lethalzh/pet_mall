@@ -2,22 +2,27 @@
     <div class="Videos">
         <Nav-Status :mode="1"></Nav-Status>
         <Video-Nav></Video-Nav>
-
-        <div class="VideoBody" v-for="(titem,index) of videoList" :key="index">
-            <div class="vidTitle" :id="'toy'+index">
-                <b><i :class="$getState('cache','Animal')=='dog'?'dogi':'cati'"></i>{{titem.title}}</b>
-                <a href="#toy1"></a>
-            </div>
-            <div class="VideoTabl">
-                <div class="videotd" v-for="(vitem,j) of titem.list" :key="j">
-                    <My-Video :Vurl="vitem.v_url" :Iurl="vitem.v_img"></My-Video>
-                    <div class="vCont">
-                        <span class="ml10">{{vitem.v_name}}</span>
-                        <span class="mr10"><i class="el-icon-view"></i>{{vitem.v_see}}</span>
+        <div
+                v-loading="loading"
+                element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading"
+                >
+            <div class="VideoBody" v-for="(titem,index) of videoList" :key="index">
+                <div class="vidTitle" :id="'toy'+index">
+                    <b><i :class="$getState('cache','Animal')=='dog'?'dogi':'cati'"></i>{{titem.title}}</b>
+                </div>
+                <div class="VideoTabl">
+                    <div class="videotd" v-for="(vitem,j) of titem.list" :key="j">
+                        <My-Video :Vurl="vitem.v_url" :Iurl="vitem.v_img"></My-Video>
+                        <div class="vCont">
+                            <span class="ml10">{{vitem.v_name}}</span>
+                            <span class="mr10"><i class="el-icon-view"></i>{{vitem.v_see}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <Footer-Status></Footer-Status>
     </div>
 </template>
@@ -32,7 +37,8 @@
         components: {NavStatus, FooterStatus, VideoNav, MyVideo},
         data() {
             return {
-                videoList: []
+                videoList: [],
+                loading:true,
             }
         },
         methods: {
@@ -52,6 +58,7 @@
                         }
                     }
                     this.videoList = Array.from( this.videoList);
+                    this.loading=false;
                     console.log(this.videoList, '1----------------this.videoList', Array.from( this.videoList))
                 }
             }
@@ -62,6 +69,7 @@
         }
     }
 </script>
+
 <style scoped lang="scss">
     .Videos {
         .VideoBody {

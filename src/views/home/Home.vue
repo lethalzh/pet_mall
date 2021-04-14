@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-      <Dog-Or-Cat v-if="this.$getState('cache','Animal')==null"></Dog-Or-Cat>
+      <Dog-Or-Cat v-if="$getState('cache','Animal')==null"></Dog-Or-Cat>
       <Nav-Status></Nav-Status>
       <Home-Body></Home-Body>
       <Footer-Status></Footer-Status>
-      <el-cascader
-              size="large"
-              :options="options"
-              v-model="selectedOptions"
-              @change="handleChange">
-      </el-cascader>
-      aaa
+<!--      <el-cascader-->
+<!--              size="large"-->
+<!--              :options="options"-->
+<!--              v-model="selectedOptions"-->
+<!--              @change="handleChange">-->
+<!--      </el-cascader>-->
+<!--      aaa-->
     <div><router-view/></div>
 
 
@@ -41,8 +41,8 @@ export default {
         }
     },
     created() {
-          this.Animal=sessionStorage.getItem('Animal')
-          this.$setState('cache','Animal',this.Animal)
+          this.Animal=sessionStorage.getItem('Animal');
+          this.$setState('cache','Animal',this.Animal);
           console.log(sessionStorage.getItem('Animal'),'home-----------')
     },
     mounted() {

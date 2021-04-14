@@ -16,11 +16,11 @@
                 <div class="rightHeader">
                     <span v-if="$getState('user','userName')!=null">
                         <el-link :underline="false" href="/shopcart"><i class="el-icon-shopping-cart-1"></i> 购物车</el-link>
-                         <el-link :underline="false" href="/myInfo"><i class="el-icon-s-order"></i>我的订单</el-link>
+                         <el-link :underline="false" href="/myInfo"><i class="el-icon-s-order"></i>我的宠爱</el-link>
                     </span>
                     <span v-else>
                           <el-link :underline="false" href="/login"><i class="el-icon-shopping-cart-1"></i> 购物车</el-link>
-                         <el-link :underline="false" href="/login"><i class="el-icon-s-order"></i>我的订单</el-link>
+                         <el-link :underline="false" href="/login"><i class="el-icon-s-order"></i>我的宠爱</el-link>
                     </span>
                     <el-link :underline="false" href="" type="danger">问题反馈</el-link>
                 </div>
@@ -34,7 +34,10 @@
                     <button :class="$getState('cache','Animal')=='dog'?'dogBgColor':'catBgColor'" @click="toProduct(search)">搜索</button>
                 </div>
                 <div class="searchBtm">
-                    <span>热门搜索：</span>
+                    <span class="spans">热门搜索：
+                        <span @click="toProduct('拜尔')">拜尔</span>
+                        | <span  @click="toProduct('麦德氏')">麦德氏</span>
+                        | <span  @click="toProduct('冠能')">冠能</span></span>
                 </div>
             </div>
             <div class="shopcart"><img :src="$getState('cache','Animal')=='dog'?dogCart:catCart"/>
@@ -115,10 +118,10 @@
             </div>
            <div class="navUl">
                 <ul>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</li>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</li>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</li>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</li>
+                    <li><router-link :to="{ name: 'product'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</router-link></li>
+                    <li><router-link :to="{ name: 'Videos'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</router-link></li>
+                    <li><router-link :to="{ name: 'AboutInfo'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</router-link></li>
+                    <li><router-link :to="{ path: 'product/特价'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</router-link></li>
                 </ul>
                 <div :class="mode==0?'navCarousel':'disNone'">
                     <el-carousel height="360px">
@@ -214,10 +217,10 @@
             </div>
             <div class="navUl">
                 <ul>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</li>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</li>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</li>
-                    <li><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</li>
+                    <li><router-link :to="{ name: 'product'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</router-link></li>
+                    <li><router-link :to="{ name: 'Videos'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</router-link></li>
+                    <li><router-link :to="{ name: 'AboutInfo'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</router-link></li>
+                    <li><router-link :to="{ path: 'product/特价'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</router-link></li>
                 </ul>
                 <div :class="mode==0?'navCarousel':'disNone'">
                     <el-carousel height="360px">
@@ -291,7 +294,8 @@
                }
            },
             async getNavData(){
-                let [err,res] = await this.$apis.home.getNavData({Animal:this.$getState('cache','Animal')});
+                let ai=this.$getState('cache','Animal')||this.Animal;
+                let [err,res] = await this.$apis.home.getNavData({Animal:ai});
                 if(res.msg=='success'){
                     this.titles= res.data;
                     let arr=this.titles,Arrs=[];
@@ -369,12 +373,13 @@
         },
         created() {
             this.mySearch=this.search;
-            console.log(sessionStorage.getItem('Animal'),'naV-----------');
-            this.Animal =sessionStorage.getItem('Animal');
+          //  console.log(sessionStorage.getItem('Animal'),'naV-----------');
+            //this.Animal =sessionStorage.getItem('Animal');
             let name = sessionStorage.getItem('userName');
-            let id =   sessionStorage.getItem('userId');
+            let id = sessionStorage.getItem('userId');
             this.$setState('user','userName',name||null);
             this.$setState('user','userId',id||null);
+          //  this.setStats('dog')
             if(this.mode==0){
                 this.getCarousel();
                 this.getNavData();
@@ -572,6 +577,15 @@
                     height: 17px;
                     overflow: hidden;
                     color: #999;
+                    .spans{
+                        span{
+                            margin: 0 10px;
+                            cursor: pointer;
+                            &:hover {
+                                color: #333;
+                             }
+                        }
+                    }
                 }
             }
             .shopcart{
@@ -816,6 +830,7 @@
                     margin-left: -20px;
                     display: flex;
                     li{
+                        cursor: pointer;
                         list-style: none;
                         line-height: 34px;
                         font-size: 16px;

@@ -22,8 +22,15 @@ export function getNavData(urlParam){
 	})
 }
 
-export function Login(params){
 
+export function getHomeBody(){
+	return request({
+		url: '/getHomeBody',
+		method: 'get',
+	})
+}
+
+export function Login(params){
 	return request({
 		url: '/user/login',
 		method: 'post',

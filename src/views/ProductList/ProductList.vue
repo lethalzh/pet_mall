@@ -30,7 +30,7 @@
                 </el-select>
             </div>
             <div class="Pbody">
-                <div class="leftP"></div>
+<!--                <div class="leftP"></div>-->
                 <div class="rightP">
                    <div style="margin-bottom: 15px">
                        <div class="filBlock">
@@ -133,20 +133,20 @@
                     this.search=bandr+'+'+this.$route.params.search;
                 else
                     this.search=this.$route.params.search;
-                let [err,res] = await this.$apis.product.getProductList({search:this.search,flag:flag,page:this.page})
+                let [err,res] = await this.$apis.product.getProductList({search:this.search,flag:flag,page:this.page});
                 if(res.msg=='success'){
-                    this.total= res.total
-                    this.productData = res.data
-                    this.brands= res.brands
+                    this.total= res.total;
+                    this.productData = res.data;
+                    this.brands= res.brands;
                     this.productData = this.productData.map(item => {
                         for (let key in item) {
                             if (key === 'com_name') {
-                                let str= this.search
-                                let replaceRegs=str.split('+')
+                                let str= this.search;
+                                let replaceRegs=str.split('+');
                                 for(let i of replaceRegs){
-                                    let replaceReg = new RegExp(i, 'g')
-                                    let replaceString = '<span style="color: #ff5134">' + i + '</span>'
-                                    item[key + '_highlights'] = item[key].replace(replaceReg, replaceString)
+                                    let replaceReg = new RegExp(i, 'g');
+                                    let replaceString = '<span style="color: #ff5134">' + i + '</span>';
+                                    item[key + '_highlights'] = item[key].replace(replaceReg, replaceString);
                                     item[key] = item[key + '_highlights']
 
                                 }
@@ -154,14 +154,14 @@
                             }
                         }
                         return item
-                    })
+                    });
                     this.loading=false
                 }else {
                 }
                 // this.search.replace('+',' ')
             },
             changePage(val){
-                this.page= val
+                this.page= val;
                 this.getProductList()
             }
         },
@@ -180,7 +180,7 @@
             margin-top: -20px;
             background-color: #e1e1e1;
             .nav{
-                width: 700px;
+                width: 1200px;
                 margin: 0 auto 10px;
                 padding-top: 10px;
                 .el-select{
@@ -198,6 +198,7 @@
                 .rightP{
                     background-color: #f2f2f2;
                     width: 980px;
+                    margin: 0 auto;
                     .h40{
                         height: 20px;
                     }

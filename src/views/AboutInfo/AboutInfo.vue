@@ -3,10 +3,11 @@
         <Nav-Status :mode="1"></Nav-Status>
         <about-Nav></about-Nav>
         <div class="aboutBody">
+
             <div class="aboutCard" v-for="(card,index) of AboutInfos" :key="index">
                 <div class="cardherd">
-                    <div><img :src="card.A_ico"></div>
-                    <div class="content"><p>{{card.A_title}}</p><span>{{card.infoArr.length}}相关</span></div>
+                    <div :id="'aboutNav'+index"><img :src="card.A_ico"></div>
+                    <div class="content"><p>{{card.A_title}}</p><span>{{card.infoArr.length}}条相关</span></div>
                 </div>
                 <div class="titimg"></div>
                 <img :src="card.A_img" alt="">
@@ -55,9 +56,10 @@
                             this.AboutInfos[j].infoArr.push(i)
                         }
                     }
-                    this.AboutInfos=Array.from(this.AboutInfos)
+                    this.AboutInfos=Array.from(this.AboutInfos);
+                    console.log(this.AboutInfos ,'------------------')
                 }
-                console.log(this.AboutInfos ,'------------------')
+
             },
             toAboutDetails(imgs){
                 let imgArr = imgs.split(',');

@@ -69,3 +69,19 @@ export function Settlement(params) {
     })
 }
 
+//确认收货
+export function setOrder(params) {
+    return request({
+        url: '/products/setOrder',
+        method: 'post',
+        params
+    })
+}
+
+//获取热门商品
+export function getHotList() {
+    return request({
+        url: '/products/getHotList',
+        method: 'post',
+    })
+}

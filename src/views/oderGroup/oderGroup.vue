@@ -43,11 +43,12 @@
                 </div>
                 <div class="rbody">
                     <p>应付总额：<span>￥{{totalPrice}}</span></p>
-                    <el-button type="success" size="medium" @click="setOder">结算生成订单</el-button>
+                    <el-button type="success" size="medium" @click="$refs.Pay.dialogVisible=true">结算生成订单</el-button>
                 </div>
             </div>
         </div>
         <Footer-Status></Footer-Status>
+        <Order-Pay ref="Pay"></Order-Pay>
         <Add-Address ref="Addre" :inserORedit="inserORedit" :addData='editData'></Add-Address>
     </div>
 </template>
@@ -56,10 +57,11 @@
     import NavStatus from '@/components/NavStatus.vue'
     import FooterStatus from '@/components/FooterStatus.vue'
     import AddAddress from '@/components/AddAddress.vue'
+    import OrderPay from  './OrderPay'
 
     export default {
         name: "oderGroup",
-        components:{ NavStatus,FooterStatus,AddAddress},
+        components:{ NavStatus,FooterStatus,AddAddress,OrderPay},
         data(){
             return {
                 addressArr:[],
@@ -67,7 +69,8 @@
                 active:0,
                 deli:['丹鸟快递','顺丰航空','顺丰陆运'],
                 editData:{},
-                inserORedit:false
+                inserORedit:false,
+                payStatus:false
             }
         },
         methods:{
@@ -141,7 +144,8 @@
                     commodity:commodity,
                     totalPrice:this.totalPrice,
                     id:id,add_id:add_id,
-                    deli:this.deli[this.active]
+                    deli:this.deli[this.active],
+                    status:this.payStatus
                 });
                 if(res.msg=='success'){
                     this.$message({
@@ -160,8 +164,8 @@
         created() {
             this.getAddress();
             this.totalPrice= this.$route.params.totalPrice;
-            let  commodity= this.$route.params.commodity;
-            console.log(commodity,'commodity')
+            // let  commodity= this.$route.params.commodity;
+            // console.log(commodity,'commodity')
         }
     }
 </script>

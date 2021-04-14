@@ -33,7 +33,7 @@
                     <el-table-column
                             label="数量">
                         <template slot-scope="scope">
-                            <el-input-number v-model="scope.row.s_num"  size="small" :min="1" label="描述文字"></el-input-number>
+                            <el-input-number v-model="scope.row.s_num"  size="small" :min="1"  :max="scope.row.com_num"></el-input-number>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -93,7 +93,7 @@
         methods: {
             async getCart() {
                 let id = this.$getState('user','userId')||sessionStorage.getItem('userId');
-                let [err,res]= await this.$apis.product.getCart({id:id})
+                let [err,res]= await this.$apis.product.getCart({id:id});
                 if(res.msg=='success'){
                     this.tableData=res.data
                 }else{
@@ -113,7 +113,7 @@
                 }
             },
             async deleteCol(dId){
-                let [err,res] = await this.$apis.product.delectCart({did:dId})
+                let [err,res] = await this.$apis.product.delectCart({did:dId});
                 if(res.msg=='success'){
                     this.$message({
                         message: '删除成功！',
@@ -130,13 +130,13 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                this.totalPrice=0
-                this.concession=0
+                this.totalPrice=0;
+                this.concession=0;
                 for(let item of val){
-                    this.totalPrice+=item.com_price*item.s_num
+                    this.totalPrice+=item.com_price*item.s_num;
                     this.concession+=item.com_oldprice*item.s_num
                 }
-                this.totalPrice.toFixed(2)
+                this.totalPrice.toFixed(2);
                 this.concession.toFixed(2)
             },
             async Settlement(){
@@ -178,9 +178,9 @@
 
         },
         created() {
-            console.log(this.$route.params.o_id,this.$route.params.o_id!='')
+            console.log(this.$route.params.o_id,this.$route.params.o_id!='');
             if(this.$route.params.o_id!=undefined ){
-                let o_id= this.$route.params.o_id
+                let o_id= this.$route.params.o_id;
                 this.getOderCom(o_id)
             }
             else
