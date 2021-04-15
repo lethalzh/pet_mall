@@ -4,30 +4,10 @@
 
         <div class="ProductBody">
             <div class="nav">
-                <el-select v-model="value" size="mini" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select><i class="el-icon-arrow-right"></i>
-                <el-select v-model="value" size="mini" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select><i class="el-icon-arrow-right"></i>
-                <el-select v-model="value" size="mini" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-breadcrumb separator-class="el-icon-arrow-right">
+                    <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                    <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+                </el-breadcrumb>
             </div>
             <div class="Pbody">
 <!--                <div class="leftP"></div>-->

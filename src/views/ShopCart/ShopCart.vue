@@ -2,7 +2,10 @@
     <div class="ShopCart">
         <Nav-Status :mode="2"></Nav-Status>
         <div class="ShopCartBody">
-            <div class="titile"><span><i class="el-icon-shopping-cart-full"></i>宠爱购物车</span></div>
+            <div class="titile">
+                <b @click="goBack"><i class="el-icon-back"></i>返回</b> |
+                <span><i class="el-icon-shopping-cart-full"></i>宠爱购物车</span>
+            </div>
             <div class="ffbr"></div>
             <div class="ShopTable">
                 <el-table
@@ -174,7 +177,8 @@
                 //     });
                 // }
 
-            }
+            },
+            goBack(){this.$router.go(-1);}
 
         },
         created() {
@@ -202,9 +206,11 @@
             margin-top: 30px;
             font-size: 18px;
             padding: 0 30px;
-            color: #ff6600;
             position: relative;
             cursor: pointer;
+            span{
+                color: #ff6600;
+            }
         }
         .ffbr{
             position: absolute;

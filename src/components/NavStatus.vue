@@ -118,7 +118,7 @@
             </div>
            <div class="navUl">
                 <ul>
-                    <li><router-link :to="{ name: 'product'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</router-link></li>
+                    <li><router-link :to="{ path: 'product/热卖'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</router-link></li>
                     <li><router-link :to="{ name: 'Videos'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</router-link></li>
                     <li><router-link :to="{ name: 'AboutInfo'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</router-link></li>
                     <li><router-link :to="{ path: 'product/特价'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</router-link></li>
@@ -217,7 +217,7 @@
             </div>
             <div class="navUl">
                 <ul>
-                    <li><router-link :to="{ name: 'product'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</router-link></li>
+                    <li><router-link :to="{ path: 'product/热卖'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>品牌热卖</router-link></li>
                     <li><router-link :to="{ name: 'Videos'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>潮品视频</router-link></li>
                     <li><router-link :to="{ name: 'AboutInfo'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>宠爱课堂</router-link></li>
                     <li><router-link :to="{ path: 'product/特价'}"><i  :class="$getState('cache','Animal')=='dog'?'dogEat':'catEat'"></i>清仓特价</router-link></li>
@@ -386,6 +386,7 @@
                 this.getCartNum();
             }else if(this.mode==1){
                 this.getNavData();
+                this.getCartNum();
             }
 
         },

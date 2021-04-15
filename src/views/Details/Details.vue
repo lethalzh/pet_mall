@@ -55,7 +55,7 @@
         </div>
         <div class="DetailsBotm">
             <el-tabs v-model="activeName"  type="card">
-                <el-tab-pane label="商品详情" name="1">
+                <el-tab-pane label="商品详情" name="first">
                     <div class="gd_details mb ft16 Detailname rela" style="display: block;">
 
                         <!--品牌相关信息-->
@@ -102,7 +102,14 @@
                             </div>
                         </div>        </div>
                 </el-tab-pane>
-                <el-tab-pane label="正牌保证" name="2">2</el-tab-pane>
+                <el-tab-pane label="正牌保证" name="second">
+                    <div class="title">
+                        <span>授权文件</span>
+                    </div>
+                    <div class="sqimg">
+                        <img src="https://img2.epetbar.com/2020-08/31/17/90e07492833bfc642b909040036d9d19.jpg?x-oss-process=style/water" alt="">
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
 
@@ -135,7 +142,7 @@
                 address:'',
                 Details:{com_imgs:''},
                 hotInfo:[],
-                activeName:1,
+                activeName:'first',
             }
         },
         methods:{
@@ -349,12 +356,24 @@
             }
         }
     }
+    .brands-nimg {
+        width: 120px;
+        height: 60px;
+        border: 1px solid #d7d7d7;
+        margin: 0 auto;
+        img{
+            width: 120px;
+            height: 60px;
+        }
+    }
+    .country-intro{
+        width: 1000px;
+        text-align: center;
+    }
     .DetailsBotm{
         width: 1000px;
         margin: 0 auto;
-        .fl{
-            float: left;
-        }
+
         .c444{
             color: #444;
         }
@@ -389,6 +408,33 @@
         .pricefont-zi{
             width: 800px;
             margin: 0 auto;
+        }
+    }
+    .title {
+        height: 44px;
+        line-height: 44px;
+        padding: 0 10px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+
+        span {
+            font-size: 16px;
+        }
+
+        .add {
+            font-size: 14px;
+
+            &:hover {
+                text-decoration: none;
+                color: #248DCC;
+            }
+        }
+
+    }
+    .sqimg{
+        img{
+            width: 100%;
         }
     }
 }

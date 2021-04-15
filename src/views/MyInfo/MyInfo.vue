@@ -1,6 +1,10 @@
 <template>
     <div class="MyInfo">
         <Nav-Status :mode="2"></Nav-Status>
+        <div class="title">
+            <b @click="goBack"><i class="el-icon-back"></i>返回</b> |
+            <span :class="$getState('cache','Animal')=='dog'?'dogColor':'catColor'"><i class="el-icon-s-custom"></i>我的宠爱</span>
+        </div>
         <div class="Info">
             <div class="menu">
                 <el-menu
@@ -68,6 +72,9 @@
                                         <span class="span2">{{order.aa[0].add_name}}</span>
                                         <span class="span3">${{order.aa[0].o_totalPrice}}</span>
                                         <span class="span4" @click="toInfo(index)">订单详情</span>
+                                        <div  v-if="state==0">
+                                            <el-tag size="mini"  :type="Sarr[parseInt(order.aa[0].o_status)+1].type">{{Sarr[parseInt(order.aa[0].o_status)+1].label}}</el-tag>
+                                        </div>
                                         <span class="span5" @click="HaveBuy(order.aa[0].o_id)"><i class="el-icon-shopping-cart-1"></i>还要买</span>
                                         <el-button type="primary" icon="el-icon-check"  size="mini"
                                                    v-if="state==2"
@@ -195,6 +202,13 @@
                 }],
                 selectId:1,
                 userInfo:{},
+                Sarr:[
+                    {type:'danger', label:'未付款'},
+                    {type:'', label:''},
+                    {type:'', label:'已付款'},
+                    {type:'info', label:'待收货'},
+                    {type:'success', label:'已收货'},
+                ],
             }
         },
         methods:{
@@ -338,7 +352,8 @@
                 if(key==4)
                     key=41;
                 this.selectId=key
-            }
+            },
+            goBack(){this.$router.go(-1);}
         },
         created() {
             this.getAddress();
@@ -349,9 +364,27 @@
 </script>
 
 <style scoped lang="scss">
+    $catColor: #e63f85;
+    $dogColor:#4d9b35;
     .MyInfo {
         background: #f9f7f7;
+        .dogColor{
+           color: $dogColor;
+        }
+        .cagColor{
+            color: $catColor;
+        }
+    .title{
+        width: 1100px;
+        margin: 0 auto;
+        margin-top: 20px;
+       b{
+           cursor: pointer;
+       }
+        span{
 
+        }
+    }
         .Info {
             width: 1100px;
             margin: 0 auto;
@@ -506,6 +539,7 @@
                             .span5 {
                                 display: inline-block;
                                 margin-right: 5px;
+                                margin-left: 5px;
                                 font-size: 12px;
                                 width: 75px;
                                 height: 28px;
@@ -546,7 +580,7 @@
                             }
 
                             span {
-                                width: 113px;
+                                width: 100px;
                                 text-align: center;
                             }
 
