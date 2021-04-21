@@ -5,7 +5,7 @@
                 :visible.sync="dialogVisible"
                 width="30%"
         >
-            <img src="@/assets/logo.png" height="200" width="200"/>
+            <img  src="@/assets/images/pay.jpg" height="200" width="200" />
 <!--            <img src="" alt="">-->
             <span slot="footer" class="dialog-footer">
                 <el-button @click="setPay(-1)">未支付</el-button>
@@ -34,5 +34,7 @@
 </script>
 
 <style scoped lang="scss">
-
+    ::v-deep .el-dialog__body{
+    text-align: center;
+}
 </style>

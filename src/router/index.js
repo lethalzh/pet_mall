@@ -44,21 +44,27 @@ const routes = [
     path: '/myInfo',
     name: 'myinfo',
     component: () => import('../views/MyInfo/MyInfo.vue')
-  },{
+  },
+  {
     path: '/videos',
     name: 'Videos',
     component: () => import('../views/Videos/Videos.vue')
   },
-    {
+  {
         path: '/aboutinfo',
         name: 'AboutInfo',
         component: () => import('../views/AboutInfo/AboutInfo.vue')
-    },
+  },
   {
     path: '/aboutDetails',
     name: 'AboutDetails',
     component: () => import('../views/AboutDetails/AboutDetails.vue')
-  }
+  },
+  {
+    path: '/cleargoods',
+    name: 'ClearGoods',
+    component: () => import('../views/ClearGoods/ClearGoods.vue')
+  },
 
 ];
 

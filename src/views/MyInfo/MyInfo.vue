@@ -119,7 +119,7 @@
                         <el-form-item label="头像">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    action="http://localhost:3000/other/upload/"
                                     :show-file-list="false"
                                     :multiple="false"
                                     :on-success="handleAvatarSuccess"
@@ -173,6 +173,7 @@
 
 <script>
     import md5 from 'js-md5';
+    import { addURL } from '@/utils/index.js'
     import NavStatus from '@/components/NavStatus.vue'
     import FooterStatus from '@/components/FooterStatus.vue'
     import AddAddress from '@/components/AddAddress.vue'
@@ -343,7 +344,10 @@
                 console.log(o_id,'----------toshopcart');
                 this.$router.push({name:'shopcart',params:{o_id:o_id}})
             },
-            handleAvatarSuccess(){},
+            handleAvatarSuccess(flie){
+                this.userInfo.u_icon = addURL(flie.url)
+              //  this.dialogVisible = true
+            },
             toInfo(index){
                 this.toInfodata = this.orderData[index].aa;
                 this.$refs.oInfo.dialogVisible=true

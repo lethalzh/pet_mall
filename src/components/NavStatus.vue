@@ -848,8 +848,7 @@
                 }
                 .navCarousel{
                     width: 770px;
-
-                    margin-top: -13px
+                    margin-top: -18px
 
                 }
             }

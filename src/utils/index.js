@@ -47,6 +47,12 @@ export function formatTime(time, option) {
     }
 }
 
+
+export function addURL(url) {
+    const str = url;
+    return url.indexOf('http') != -1 ? url : 'http://localhost:3000/img/' + url
+}
+
 /**
  * 获取url中的参数对象
  * @param {string} url

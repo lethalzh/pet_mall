@@ -14,6 +14,14 @@ export function getProductList(params){
         params
     })
 }
+//获取折扣商品列表
+export function getClearGoods(params){
+    return request({
+        url: '/products/getClearGoods',
+        method: 'post',
+        params
+    })
+}
 
 
 //获取商品信息
