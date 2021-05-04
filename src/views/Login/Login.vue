@@ -42,14 +42,14 @@
         },
         methods:{
             async onSubmit(){
-                 let [err,res] = await this.$apis.home.Login(this.form)
+                 let [err,res] = await this.$apis.home.Login(this.form);
                 if(res.msg=='success'){
-                    this.$setState('user','userName',res.data.name)
-                    this.$setState('user','userId',res.data.id)
-                    this.$setState('user','token',res.token)
-                    sessionStorage.setItem('token',res.token)
-                    sessionStorage.setItem('userName',res.data.name)
-                    sessionStorage.setItem('userId',res.data.id)
+                    this.$setState('user','userName',res.data.name);
+                    this.$setState('user','userId',res.data.id);
+                    this.$setState('user','token',res.token);
+                    sessionStorage.setItem('token',res.token);
+                    sessionStorage.setItem('userName',res.data.name);
+                    sessionStorage.setItem('userId',res.data.id);
                     this.$message({
                         message:'登陆成功',
                         type: 'success'
@@ -70,7 +70,7 @@
     .Login{
         background: rgba(135,206,250,0.2);
         .topLogin{
-            height: 50px;
+            height: 175px;
         }
         .bodyLogin{
             position: relative;
