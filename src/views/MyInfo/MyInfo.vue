@@ -79,6 +79,9 @@
                                         <el-button type="primary" icon="el-icon-check"  size="mini"
                                                    v-if="state==2"
                                                    @click="checkOrder(order.aa[0].o_id)">收货</el-button>
+                                        <el-button type="primary" icon="el-icon-check"  size="mini"
+                                                   v-if="state==-1"
+                                                   @click="subBuy(order.aa[0].o_id)">立即付款</el-button>
 <!--                                        <span class="span6">收货</span>-->
                                     </div>
                                 </div>
@@ -102,7 +105,7 @@
                             </div>
                             <div class="edit">
                                 <span  v-if="item.add_flag!='true'" @click="setTool(item.add_id,1)">设为默认地址</span>
-                                <span @click="setTool(item.add_id,2)">编辑</span>
+   .
                                 <span @click="setTool(item.add_id,3)">删除</span>
                             </div>
                         </div>
@@ -168,6 +171,7 @@
         <Footer-Status></Footer-Status>
         <Order-Info ref="oInfo"  :toInfodata="toInfodata"></Order-Info>
         <Add-Address ref="Addre" :inserORedit="inserORedit" :addData='editData'></Add-Address>
+        <Order-Pay ref="Pay"></Order-Pay>
     </div>
 </template>
 
@@ -178,9 +182,10 @@
     import FooterStatus from '@/components/FooterStatus.vue'
     import AddAddress from '@/components/AddAddress.vue'
     import OrderInfo from './OrderInfo'
+    import OrderPay from  '../oderGroup/OrderPay'
     export default {
         name: "MyInfo",
-        components:{ NavStatus,FooterStatus,AddAddress,OrderInfo},
+        components:{ NavStatus,FooterStatus,AddAddress,OrderInfo,OrderPay},
         data(){
             return{
                 addressArr:{},
@@ -210,6 +215,8 @@
                     {type:'info', label:'待收货'},
                     {type:'success', label:'已收货'},
                 ],
+                payStatus:false,
+                oid:null,
             }
         },
         methods:{
@@ -293,6 +300,20 @@
                     });
                 }
                 this.getOrder()
+            },
+            subBuy(o_id){
+                this.oid=o_id;
+                this.$refs.Pay.dialogVisible=true
+            },
+            async setOder(){
+                let [err,res]= await this.$apis.product.setPay({oid:this.oid});
+                if(res.msg=='success'){
+                    this.$message({
+                        message:'支付成功！！',
+                        type: 'success'
+                    });
+                    this.getOrder()
+                }
             },
             async getuserInfo(){
                 let userId=this.$getState('user','userId')|| sessionStorage.getItem('userId');

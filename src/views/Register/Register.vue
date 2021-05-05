@@ -9,16 +9,16 @@
                 <p>注册</p>
                 <span><el-link :underline="false" href="/login">已有账户</el-link></span>
                 <el-form  label-width="80px" :model="form">
-                    <el-form-item label="用户名">
+                    <el-form-item label="用户名"  required="true">
                         <el-input v-model="form.name"  placeholder="请输入手机号"  prefix-icon="el-icon-user-solid"></el-input>
                     </el-form-item>
-                    <el-form-item label="密码">
+                    <el-form-item label="密码"  required="true">
                         <el-input v-model="form.rpassword" placeholder="请输入密码"  prefix-icon="el-icon-key" show-password>></el-input>
                     </el-form-item>
-                    <el-form-item label="确认密码">
+                    <el-form-item label="确认密码"  required="true">
                         <el-input v-model="form.password" placeholder="请输入密码"  prefix-icon="el-icon-key" show-password>></el-input>
                     </el-form-item>
-                    <el-form-item label="电话号码">
+                    <el-form-item label="电话号码"  required="true">
                         <el-input v-model="form.phone" placeholder="请输入电话"  prefix-icon="el-icon-map-location"></el-input>
                     </el-form-item>
                     <el-form-item label="收货地址">
@@ -54,7 +54,7 @@
         },
         methods:{
           async  onSubmit(){
-               let [err,res] = await this.$apis.home.Register(this.form)
+               let [err,res] = await this.$apis.home.Register(this.form);
               if(res.msg=='success'){
                   this.$message({
                       message: '恭喜你，注册成功！',

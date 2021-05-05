@@ -49,16 +49,19 @@
                         </div>
                         <div class="splist">
                             <div class="spitem" v-for="i in productData" :key="i.com_id+'d'">
-                                <router-link :to="'/details/'+i.com_id">
-                                <img :src="i.com_imgs"/>
-                                <p>
-                                    <img class="activityico" src="https://static.epetbar.com/static_wap/appmall/lib/list/activity.png?version=2016120201">
-                                  <span v-html='i.com_name_highlights'></span>
+                                <div class="item">
+                                    <router-link :to="'/details/'+i.com_id">
+                                        <img :src="i.com_imgs"/>
+                                        <p>
+                                            <img class="activityico" src="https://static.epetbar.com/static_wap/appmall/lib/list/activity.png?version=2016120201">
+                                            <span v-html='i.com_name_highlights'></span>
 
-                                </p>
-                                <p><span class="old">${{i.com_oldprice}}</span>${{i.com_price}}</p>
-                                <p>月销{{i.com_msales}}(袋)</p>
-                                </router-link>
+                                        </p>
+                                        <p><span class="old">${{i.com_oldprice}}</span>${{i.com_price}}</p>
+                                        <p>月销{{i.com_msales}}(袋)</p>
+                                    </router-link>
+                                </div>
+                               <span class="addcat">加入购物车 <i class="el-icon-shopping-cart-full" @click="addCart(i.com_id)"></i></span>
                             </div>
                         </div>
                         <div style="text-align: center;margin-bottom: 10px">
@@ -76,18 +79,18 @@
             </div>
         </div>
         <Footer-Status></Footer-Status>
-
+        <Add-Cart ref="openMsg"></Add-Cart>
     </div>
 </template>
 
 <script>
     import NavStatus from '@/components/NavStatus.vue'
     import FooterStatus from '@/components/FooterStatus.vue'
-
+    import AddCart from '@/components/AddCart.vue'
     export default {
         name: "ProductList",
         components: {
-            NavStatus,FooterStatus
+            NavStatus,FooterStatus,AddCart
         },
         data(){
             return{
@@ -139,6 +142,24 @@
                 }else {
                 }
                 // this.search.replace('+',' ')
+            },
+            async addCart(com_id){
+                if(sessionStorage.getItem('userId')){
+                let id = sessionStorage.getItem('userId');
+                let [err,res] = await this.$apis.product.addCart({com_id:com_id,address:'',id:id,num:1});
+                    if(res.msg=='success'){
+                        this.openmsg()
+                    }
+                }
+                else{
+                    this.$message({
+                        message:'没有登录请登录,请先登录',
+                        type: 'warning'
+                    });
+                }
+            },
+            openmsg(){
+                this.$refs.openMsg.open();
             },
             changePage(val){
                 this.page= val;
@@ -295,36 +316,57 @@
                             margin: 0 10px 10px 0;
                             overflow: hidden;
                             background-color: #FFF;
-                            :nth-child(2){
-                                img{
-                                    width: 32px;
-                                    height: 16px;
+                            .item{
+
+                                :nth-child(2){
+                                    img{
+                                        width: 32px;
+                                        height: 16px;
+                                    }
+                                    line-height: 17px;
+                                    height: 36px;
+                                    font-size: 12px;
+                                    color: #444;
+                                    text-align: left;
+                                    overflow: hidden;
                                 }
-                                line-height: 17px;
-                                height: 36px;
+                                :nth-child(3) {
+                                    line-height: 16px;
+                                    font-weight: 700;
+                                    color: #F60;
+                                    font-size: 14px;
+                                }
+                                :nth-child(4){
+                                    color: #999;
+                                    font-size: 12px;
+                                }
+                                .old{
+                                    color: #999;
+                                    margin-right: 10px;
+                                    text-decoration: line-through;
+                                }
+                                img{
+                                    width: 200px; height: 200px;margin-left: 6.5px;
+                                }
+                            }
+                            .addcat {
+                                position: absolute;
+                                cursor: pointer;
+                                right: 0px;
+                                width: 95px;
+                                height: 25px;
                                 font-size: 12px;
-                                color: #444;
-                                text-align: left;
-                                overflow: hidden;
+                                bottom: 16px;
+                                &:hover{
+                                    color: #999;
+                                }
+                                i{
+                                    color: #6acd34;
+                                    font-size: 18px;
+                                    line-height: 25px;
+                                }
                             }
-                            :nth-child(3) {
-                                line-height: 16px;
-                                font-weight: 700;
-                                color: #F60;
-                                font-size: 14px;
-                            }
-                            :nth-child(4){
-                                color: #999;
-                                font-size: 12px;
-                            }
-                            .old{
-                                color: #999;
-                                margin-right: 10px;
-                                text-decoration: line-through;
-                            }
-                            img{
-                                width: 200px; height: 200px;margin-left: 6.5px;
-                            }
+
                         }
                     }
 

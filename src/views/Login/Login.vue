@@ -9,10 +9,10 @@
                 <p>登陆</p>
                 <span><el-link :underline="false" href="/register">没有账户，前往创建</el-link></span>
                 <el-form  label-width="80px" :model="form">
-                    <el-form-item label="用户名">
+                    <el-form-item label="用户名" required="true">
                         <el-input v-model="form.name"  placeholder="请输入手机号/账号"  prefix-icon="el-icon-user-solid"></el-input>
                     </el-form-item>
-                    <el-form-item label="密码">
+                    <el-form-item label="密码"  required="true">
                         <el-input v-model="form.password" placeholder="请输入密码"  prefix-icon="el-icon-key" show-password>></el-input>
                     </el-form-item>
                     <el-form-item>

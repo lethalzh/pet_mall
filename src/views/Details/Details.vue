@@ -8,7 +8,14 @@
             </el-breadcrumb>
         </div>
         <div class="DetailsBody">
-            <div class="aimg"><pic-zoom :url="Details.com_imgs"></pic-zoom></div>
+            <div class="aimg"><pic-zoom :url="Details.com_imgs"></pic-zoom>
+                <div class="share">
+                    <span>编号：{{Details.com_id}}</span>
+                    <span><i class="el-icon-share"></i>分享</span>
+                    <span><i class="el-icon-star-on"></i>收藏商品</span>
+                </div>
+
+            </div>
 <!--            <img class="aimg" :src="Details.com_imgs" alt="">-->
             <div class="Dbody">
                 <div class="topBody">
@@ -32,11 +39,12 @@
                          <div class="box"><img src="https://static.epetbar.com/static_wap/appmall/lib/goods/freeshipping.png" alt=""><span>99元包邮</span></div>
                          <div class="box"><img src="https://static.epetbar.com/static_wap/appmall/lib/goods/thirtydays.png" alt=""><span>30天退货</span></div>
                     </div>
-                    <p>我要买 : <el-input-number v-model="num" size="small" :min="1"  :max="Details.com_num"></el-input-number></p>
+                    <p>我要买 : <el-input-number v-model="num" size="small" :min="1"  :max="Details.com_num"></el-input-number> <span>还有：{{Details.com_num}}</span></p>
                     <p >总价格：${{(num*Details.com_price).toFixed(2)}}  已经优惠：${{(num*(Details.com_oldprice -Details.com_price)).toFixed(2)}}</p>
                     <p class="addr">送货至 : <el-input v-model="address"  aria-valuenow='1' placeholder="请输入配送地址"></el-input></p>
                     <p>16点前下单，当天发货。</p>
-                    <el-button type="success" @click="openmsg">加入购物车</el-button>
+                    <el-button type="success" @click="addCart">加入购物车</el-button>
+                    <el-button type="primary" @click="subSet">立即购买</el-button>
                 </div>
             </div>
 
@@ -147,14 +155,12 @@
         },
         methods:{
             toDetail(Url){
-
                 window.location.href=`${this.$getState('dict','thisUrl')}details/${Url}`;
             },
             openmsg(){
                 this.$refs.openMsg.open();
-                this.addCart()
             },
-             async getDetails(){
+            async getDetails(){
                 let pid =  this.$route.params.pid;
                 let [err,res] = await this.$apis.product.getDetails({pid:pid});
                 if(res.msg=='success'){
@@ -169,16 +175,25 @@
             async addCart(){
                 this.Details.num = this.num;
                 this.Details.address = this.address;
-                this.Details.id = sessionStorage.getItem('userId');
-                let [err,res] = await this.$apis.product.addCart(this.Details);
-                if(res.msg=='success'){
+                if( sessionStorage.getItem('userId')||this.$getState('user','userId')){
+                    this.Details.id = sessionStorage.getItem('userId');
+                    let [err,res] = await this.$apis.product.addCart(this.Details);
+                    if(res.msg=='success'){
+                        this.$message({
+                            message: '加入成功',
+                            type: 'success'
+                        });
+                        this.openmsg()
+                    }else{
+                        this.$message({
+                            message:'加入失败',
+                            type: 'warning'
+                        });
+                    }
+                }
+                else{
                     this.$message({
-                        message: '加入成功',
-                        type: 'success'
-                    });
-                }else{
-                    this.$message({
-                        message:'加入失败',
+                        message:'没有登录请登录',
                         type: 'warning'
                     });
                 }
@@ -188,7 +203,23 @@
                 if(res.msg=='success'){
                     this.hotInfo= res.data;
                 }
+            },
+            subSet(){
+
+                if(this.$getState('user','userId')||sessionStorage.getItem('userId')) {
+                    this.Details.num=this.num;
+                    this.$router.push({name:'odergroup',
+                        params:{commodity:[this.Details],totalPrice:this.Details.num*this.Details.com_price}
+                    })
+                }else {
+                    this.$message({
+                        message:'没有登录请登录,请先登录',
+                        type: 'warning'
+                    });
+                }
+
             }
+
         },
         created() {
             this.getDetails();
@@ -218,6 +249,14 @@
             margin-top: 30px;
             width: 250px;
             height: 250px;
+            .share{
+                color: #999;
+                font-size: 12px;
+                cursor: pointer;
+                span{
+                    margin-right: 17px;
+                }
+            }
         }
         .Dbody{
             margin-left: 50px;

@@ -77,6 +77,15 @@ export function Settlement(params) {
     })
 }
 
+//再次支付
+
+export function setPay(params) {
+    return request({
+        url: '/products/setPay',
+        method: 'post',
+        params
+    })
+}
 //确认收货
 export function setOrder(params) {
     return request({

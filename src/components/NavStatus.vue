@@ -41,8 +41,11 @@
                 </div>
             </div>
             <div class="shopcart"><img :src="$getState('cache','Animal')=='dog'?dogCart:catCart"/>
-                <el-badge :value="cartInNum" class="item" type="primary">
+                <el-badge :value="cartInNum" class="item" type="primary"  v-if="$getState('user','userName')!=null">
                     <el-link :underline="false"   href="/shopcart">购物车</el-link>
+                </el-badge>
+                <el-badge :value="cartInNum" class="item" type="primary"  v-else>
+                    <el-link :underline="false"   href="/login">购物车</el-link>
                 </el-badge>
             </div>
         </div>
